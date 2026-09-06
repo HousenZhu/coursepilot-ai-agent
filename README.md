@@ -2,7 +2,7 @@
 
 CoursePilot is a standalone Python AI-agent service for personalized learning support. It was developed as an extension to the team-built **LearnHub LMS**, where users, enrollments, courses, assessments, assignments, deadlines, and PDF materials already exist in PostgreSQL.
 
-The original LMS project remains the system of record and UI host: [personalized-learning-platform](https://github.com/HousenZhu/personalized-learning-platform).
+The original LMS project remains the system of record and UI host: [personalized-learning-platform](https://github.com/HousenZhu/personalized-learning-platform/tree/ZHS).
 
 This repository intentionally contains only the CoursePilot Agent service, its migrations, evaluation harness, and integration documentation. It does not redistribute the original Next.js LMS application, its database, user data, or team-owned frontend code.
 
