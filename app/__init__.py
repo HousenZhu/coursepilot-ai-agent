@@ -1,0 +1,1 @@
+"""CoursePilot AI agent service."""

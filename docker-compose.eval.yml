@@ -1,0 +1,54 @@
+name: coursepilot-eval
+
+services:
+  eval-postgres:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_DB: coursepilot_eval
+      POSTGRES_USER: coursepilot
+      POSTGRES_PASSWORD: coursepilot
+    tmpfs:
+      - /var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U coursepilot -d coursepilot_eval"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  eval-agent:
+    build:
+      context: .
+      args:
+        INSTALL_DEV: "true"
+    environment:
+      DATABASE_URL: postgresql+asyncpg://coursepilot:coursepilot@eval-postgres:5432/coursepilot_eval
+      CHECKPOINT_DATABASE_URL: postgresql://coursepilot:coursepilot@eval-postgres:5432/coursepilot_eval?options=-csearch_path%3Dagent%2Cpublic
+      AGENT_INTERNAL_SECRET: eval-only-secret-that-is-at-least-32-characters
+      AGENT_JWT_ISSUER: learnhub-web
+      AGENT_JWT_AUDIENCE: coursepilot-agent
+      LLM_API_KEY: ollama
+      LLM_BASE_URL: http://host.docker.internal:11434/v1
+      LLM_MODEL: qwen3:8b
+      LLM_TEMPERATURE: "0"
+      LLM_DISABLE_THINKING: "true"
+      LLM_MAX_TOKENS: "512"
+      LLM_TIMEOUT_SECONDS: "120"
+      MAX_TOOL_ITERATIONS: "4"
+      RETRIEVAL_TOP_K: "6"
+      LOG_LEVEL: WARNING
+      EVAL_USER_ID: eval-student-alpha
+      EVAL_OTHER_USER_ID: eval-student-omega
+      EVAL_COURSE_ID: eval-course-web
+      EVAL_GIT_COMMIT: ${EVAL_GIT_COMMIT:-working-tree}
+      EVAL_GPU_NAME: ${EVAL_GPU_NAME:-NVIDIA GeForce RTX 3080}
+      EVAL_GPU_MEMORY_MB: ${EVAL_GPU_MEMORY_MB:-10240}
+      EVAL_GPU_DRIVER: ${EVAL_GPU_DRIVER:-unknown}
+    ports:
+      - "127.0.0.1:8001:8000"
+    volumes:
+      - ./app:/app/app:ro
+      - ./evals:/app/evals
+      - ./tests:/app/tests:ro
+    depends_on:
+      eval-postgres:
+        condition: service_healthy
