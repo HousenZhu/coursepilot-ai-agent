@@ -1,0 +1,37 @@
+name: coursepilot-upgrade-test
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_DB: coursepilot_upgrade_test
+      POSTGRES_USER: coursepilot
+      POSTGRES_PASSWORD: coursepilot
+    tmpfs:
+      - /var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U coursepilot -d coursepilot_upgrade_test"]
+      interval: 2s
+      retries: 20
+  tests:
+    image: coursepilot-upgrade-test-agent:latest
+    build:
+      context: .
+      args:
+        INSTALL_DEV: "true"
+    environment:
+      DATABASE_URL: postgresql+asyncpg://coursepilot:coursepilot@postgres:5432/coursepilot_upgrade_test
+      CHECKPOINT_DATABASE_URL: postgresql://coursepilot:coursepilot@postgres:5432/coursepilot_upgrade_test?options=-csearch_path%3Dagent%2Cpublic
+      AGENT_INTERNAL_SECRET: test-secret-that-is-at-least-32-characters
+      AGENT_DB_PASSWORD: test-runtime-password
+      LLM_API_KEY: unused
+      PYTHONPATH: /app
+      ALLOW_EVAL_RESET: "1"
+      UPLOADS_DIR: /tmp/coursepilot-fixtures
+      RUN_UPGRADE_INTEGRATION_TESTS: "1"
+      RUN_EVAL_INTEGRATION_TESTS: "1"
+    volumes:
+      - .:/app
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command: ["sh", "-c", "alembic upgrade head && python -m evals.seed --reset && python -m app.bootstrap && python -m pytest -q"]

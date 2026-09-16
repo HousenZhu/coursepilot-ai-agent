@@ -2,7 +2,7 @@
 
 CoursePilot was built as a backend extension to the team LearnHub LMS project:
 
-- Upstream project: [personalized-learning-platform](https://github.com/HousenZhu/personalized-learning-platform)
+- Upstream project: [personalized-learning-platform](https://github.com/HousenZhu/personalized-learning-platform/tree/ZHS)
 - Upstream responsibilities: Next.js UI, Better Auth session management, LMS data ownership, course upload workflows, and the PostgreSQL public schema.
 - CoursePilot responsibilities: authenticated Agent orchestration, scoped data tools, document retrieval, Agent-owned persistence in the `agent` schema, streaming, observability, and evals.
 

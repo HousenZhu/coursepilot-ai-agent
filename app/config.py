@@ -35,14 +35,21 @@ class Settings(BaseSettings):
     llm_max_tokens: int = Field(default=1024, ge=64, le=8192)
     llm_timeout_seconds: float = Field(default=25, gt=0, le=120)
     max_tool_iterations: int = Field(default=4, ge=1, le=8)
+    run_timeout_seconds: float = Field(default=180, gt=0, le=600)
+    max_concurrent_runs: int = Field(default=1, ge=1, le=16)
+    migration_database_url: str | None = None
+    checkpoint_setup: bool = True
 
     uploads_dir: str = "/data/public"
     allowed_content_hosts: str = "amazonaws.com,digitaloceanspaces.com"
     max_pdf_bytes: int = Field(default=20_000_000, ge=1_000_000, le=50_000_000)
     max_pdf_pages: int = Field(default=300, ge=1, le=1000)
     embedding_model: str = "sentence-transformers/all-MiniLM-L6-v2"
+    embedding_revision: str = "1110a243fdf4706b3f48f1d95db1a4f5529b4d41"
     retrieval_top_k: int = Field(default=6, ge=1, le=12)
     retrieval_min_score: float = Field(default=0.25, ge=-1, le=1)
+    retrieval_mode: str = "hybrid"
+    chunker_version: str = "words400-overlap60-v2"
     otel_exporter_otlp_endpoint: str | None = None
 
     @field_validator("llm_base_url")

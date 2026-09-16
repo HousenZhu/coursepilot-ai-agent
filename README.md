@@ -1,82 +1,151 @@
 # CoursePilot AI Agent
 
-CoursePilot is a standalone Python AI-agent service for personalized learning support. It was developed as an extension to the team-built **LearnHub LMS**, where users, enrollments, courses, assessments, assignments, deadlines, and PDF materials already exist in PostgreSQL.
+Standalone AI backend for the team-built LearnHub LMS. The LMS owns users, courses,
+uploads and the public PostgreSQL schema. This module owns Agent execution, retrieval,
+conversation history, plans, observability and evaluation. See [UPSTREAM.md](UPSTREAM.md).
 
-The original LMS project remains the system of record and UI host: [personalized-learning-platform](https://github.com/HousenZhu/personalized-learning-platform).
+This repository is the canonical Agent implementation. The team LMS lives in
+[personalized-learning-platform, branch ZHS](https://github.com/HousenZhu/personalized-learning-platform/tree/ZHS).
+It is not copied into this personal repository.
 
-This repository intentionally contains only the CoursePilot Agent service, its migrations, evaluation harness, and integration documentation. It does not redistribute the original Next.js LMS application, its database, user data, or team-owned frontend code.
+## Measured Results
 
-## What It Adds To The LMS
+The completed Qwen3-8B Q4_K_M run contains **330 visible regression cases**, not an
+independent held-out benchmark. On an RTX 3080 10GB with context 4096:
 
-CoursePilot turns existing LMS data into permission-scoped, typed Agent tools rather than injecting one unstructured context string into a chatbot prompt. It supports learning diagnostics, saved study plans, course-material retrieval with citations, streaming answers, and persisted multi-turn conversations.
+| Metric | Result |
+| --- | --- |
+| Task success | 278/330 (84.2%) |
+| Source citation precision | 57/59 (96.6%) |
+| Citation coverage | 55/66 (83.3%) |
+| First validated response segment, median | 3.539s across 319 samples |
 
-```text
-LearnHub LMS BFF -> short-lived internal JWT -> CoursePilot FastAPI
-                                             -> LangGraph routing and tool loop
-                                             -> read-only LMS PostgreSQL + pgvector
-                                             -> SSE answer, citations, and study plan
-```
+These are the [audited rescoring results](evals/artifacts/upgrade-regression-330-rescore-v2/report.md).
+The [original run](evals/artifacts/upgrade-regression-330-v1/report.md) is retained:
+the scorer initially matched short numbers inside random trace IDs. Rescoring changed
+only that matching rule, not responses, labels or timings. One authorization-policy
+assertion still fails; zero matched canary disclosures is not proof of universal safety.
+Source correctness is not semantic entailment. See [verification and limits](docs/verification.md).
 
-The Agent is intentionally a bounded single-agent workflow:
+## Standalone Demo
 
-```text
-validate -> route -> tools/retrieve -> answer -> verify -> persist
-```
-
-It uses an explicit tool allowlist, server-injected identity, fixed repository queries, and a four-round tool limit. The model never receives a user ID and cannot generate arbitrary SQL.
-
-## Integration Contract
-
-The LMS BFF authenticates its Better Auth session and issues a 60-second HS256 internal JWT. CoursePilot verifies `sub`, `role`, `iss`, `aud`, `iat`, `exp`, and `jti`; browser clients do not call the Python service directly.
-
-`POST /v1/agent/runs/stream` accepts:
-
-```json
-{
-  "conversation_id": null,
-  "message": "Use my grades and deadlines to create a study plan",
-  "course_id": null
-}
-```
-
-It emits SSE `token`, `tool_status`, `final`, and `error` events. The final event contains Markdown, source citations, an optional persisted study plan, suggested actions, and a trace ID. See [UPSTREAM.md](UPSTREAM.md) for the LMS schema and deployment assumptions.
-
-## Local Development
-
-Prerequisites: Python 3.12, PostgreSQL with pgvector, and an OpenAI-compatible chat endpoint. For local use, Ollama is supported.
+Clone this repository directly; the isolated demo does not need real LMS data.
+Install Docker Desktop (Linux containers) and Ollama, then run:
 
 ```bash
-cp .env.example .env
-python -m venv .venv
-pip install -e ".[dev]"
-alembic upgrade head
-uvicorn app.main:app --reload
+git clone https://github.com/HousenZhu/coursepilot-ai-agent.git
+cd coursepilot-ai-agent
+ollama pull qwen3:8b
+docker compose -f docker-compose.eval.yml up --build -d
+docker compose -f docker-compose.eval.yml exec -T eval-agent python -m evals.run --split development --warmups 10 --run-id my-development-run
 ```
 
-Set `DATABASE_URL` to a PostgreSQL database that exposes the LMS tables as read-only to the Agent database role. The Agent writes only to its `agent` schema.
+The API is available at `http://localhost:8001/docs`. The evaluation runner signs its
+own short-lived demo JWTs and exercises the actual API. The fixture has two students,
+separate learning records and original-text PDFs. Demo credentials are not production secrets.
+Use a new run ID for each run. Do not reseed an active evaluation.
 
-## Isolated Evaluation
+## Runtime
 
-The included evaluation stack never uses the team LMS database. It starts a temporary pgvector database, seeds two isolated students and canary data, then runs a 30-template dataset with 12 variants per template. Variant 0 is development-only; variants 1-11 make up the 330-case held-out set.
+```text
+Next.js BFF / Better Auth -> short-lived JWT -> FastAPI
+    -> reserve request + conversation lock -> structured route
+    -> permission-scoped tools -> deterministic records / validated source paragraphs
+    -> atomic final response + messages + staged plan
+PostgreSQL public: SELECT only; agent schema: application-owned writes
+```
+
+Known independent tools execute concurrently, each with its own database session.
+The current capabilities do not require an iterative model planner; plan creation gathers
+its own evidence. There is no arbitrary SQL, multi-agent orchestration, or hidden tool loop.
+
+## Run With The LMS
+
+From the parent LMS root, set `AGENT_INTERNAL_SECRET`, `BETTER_AUTH_SECRET` and a URL-safe
+`AGENT_DB_PASSWORD` in the existing untracked `.env`. Keep secrets out of images.
+Docker Desktop must use Linux containers on Windows; the same Compose files work on macOS.
+
+```bash
+docker compose up --build -d
+docker compose logs --tail 60 agent-migrate agent web
+```
+
+Open http://localhost:3000. A one-shot migrator creates the Agent tables/checkpoints and
+grants access to `coursepilot_agent`. The running Agent never receives migration credentials.
+Existing PDFs must be reindexed to populate version metadata before upgraded retrieval
+will return them. Use the existing teacher-owned indexing action.
+Do not use `down -v` on the LMS stack to troubleshoot upgrades.
+
+Native development uses Python 3.12 and `uv sync --frozen --extra dev`.
+Set a migration-role `MIGRATION_DATABASE_URL` for `uv run alembic upgrade head`;
+bootstrap once with `uv run python -m app.bootstrap`. Set runtime database URLs to the
+restricted role and `CHECKPOINT_SETUP=false` before `uv run uvicorn app.main:app --reload`.
+
+## API
+
+- `POST /v1/agent/runs/stream`: existing message/course/conversation body; optional
+  `Idempotency-Key` header. Same user/key/body returns the persisted final result;
+  changed body or unfinished request returns 409. No automatic replay of failed writes.
+- `GET /v1/agent/runs/{id}`: owner-only status and result.
+- `GET /v1/conversations/{id}`: committed messages, citations and plans.
+- `GET /v1/sources/{id}`: enrollment-checked PDF; changed/retired sources fail closed.
+- `POST /internal/index/courses/{id}`: teacher-owned indexing only.
+- `/health/live`, `/health/ready`, `/metrics`.
+
+SSE retains `token/tool_status/final/error`. Tokens now contain checked text segments, not
+raw model drafts. `final` adds run ID, explicit outcome and structured LMS fact tuples.
+Source cards carry immutable source IDs and document versions. Source matching is not
+proof that a natural-language claim is entailed by its evidence.
+
+## Verification
+
+Run from this directory. The test stack has its own database and network.
+
+```bash
+docker compose -f docker-compose.test.yml build tests
+docker compose -f docker-compose.test.yml run --rm tests
+docker compose -f docker-compose.test.yml run --rm -e RUN_INTEGRATION_TESTS=1 --entrypoint python tests -m pytest -q tests/test_tenant_isolation.py
+docker compose -f docker-compose.test.yml down -v
+```
+
+The first suite covers migration, actual PDF ingestion, negative/positive ownership,
+idempotency, cancellation, timeouts, rollback and controlled-model LangGraph execution.
+The legacy repository isolation suite runs separately because it replaces its fixture.
+CI uses the locked container dependencies, Ruff and mypy.
+See [executed checks and evidence limits](docs/verification.md) and the optional
+[local metrics dashboard](docs/observability.md).
+
+## Real Model Evaluation
+
+Start Ollama with `qwen3:8b` installed. From this directory:
 
 ```bash
 docker compose -f docker-compose.eval.yml up --build -d
-docker compose -f docker-compose.eval.yml exec -T eval-agent python -m evals.seed --reset
-docker compose -f docker-compose.eval.yml exec -T eval-agent python -m pytest -q
-docker compose -f docker-compose.eval.yml exec -T eval-agent python -m evals.run --split heldout
-docker compose -f docker-compose.eval.yml down -v
+docker compose -f docker-compose.eval.yml exec -T eval-agent python -m evals.run --split development --warmups 10 --run-id development-v2
 ```
 
-Each run writes a case-level JSON result, Markdown report, and environment manifest under `evals/artifacts/`. Metrics are calculated deterministically: exact tool routing, required and forbidden facts, citation precision over every returned citation, authorization isolation, TTFT, and end-to-end latency.
+The init service seeds its own database and real PDFs. Do not restart init or reseed while
+a run is in progress. The database is retained for inspection/resume.
+The existing 330-case subset is **visible regression data**, regardless of its legacy
+`heldout` CLI spelling. It is not a new independent test set.
+Artifacts include source snapshots, exact cases, fixture snapshot, dependency/model
+metadata, an append-only attempt journal, JSON results and a Markdown report.
 
-## Repository Scope
+To resume, use the existing stack and pass the same run ID plus `--resume`. Interrupted
+attempts remain failures; changed source/model/settings/fixtures reject resume.
+Cleanup only this isolated stack with `docker compose -f docker-compose.eval.yml down -v`.
 
-- `app/`: FastAPI endpoints, LangGraph workflow, typed tools, repositories, RAG, and observability.
-- `alembic/`: Agent-schema migrations.
-- `evals/`: fixtures, 30 scenario templates, deterministic scorers, and SSE runner.
-- `tests/`: unit, routing, authorization, and isolated database tests.
-- `docs/`: system architecture and interview/demo material.
+`evals/transfer-candidates.json` contains unreviewed, visible transfer cases for the
+`EVAL_FIXTURE_PROFILE=transfer-v1` fixture. See [evaluation protocol](docs/evaluation.md).
+Do not label them unseen or use target metrics as measurements.
 
-## Deliberate Limits
+## Limits
 
-V1 does not use multi-agent orchestration, arbitrary SQL, web search, OCR, queues, or model fine-tuning. Exact pgvector cosine search is used for the small demonstration corpus; an HNSW index is a measured future scaling option, not a default complexity cost.
+Single-process model concurrency is bounded; multiple replicas need a shared admission
+controller. Conversation locks are database-backed across replicas.
+Checkpoint threads are per run; committed product history reconstructs subsequent turns.
+A process crash can leave a running row until a status read or later request detects its
+released conversation lock and marks the abandoned run failed. Writes are never auto-replayed.
+Disconnect cancels the application request, but provider-side GPU work may finish separately.
+PDF layout/OCR, broad multilingual retrieval, semantic entailment guarantees and remote
+load testing are not claimed. Histories retain a bounded recent context.

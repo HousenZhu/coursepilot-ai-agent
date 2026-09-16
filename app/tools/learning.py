@@ -95,10 +95,13 @@ def _build_plan_items(
 
 def build_learning_tools(context: ToolContext) -> list[BaseTool]:
     @tool
-    async def get_student_profile() -> str:
+    async def get_student_profile(course_id: Annotated[str | None, "Optional enrolled course ID"] = None) -> str:
         """Get the authenticated student's enrolled courses and completion progress."""
         try:
             result = await context.lms.get_student_profile(context.user_id)
+            selected_course = context.course_id or course_id
+            if selected_course:
+                result = {**result, "courses": [c for c in result.get("courses", []) if c["course_id"] == selected_course]}
             TOOL_CALLS.labels(tool="get_student_profile", status="success").inc()
             return _json({"kind": "student_profile", "data": result})
         except Exception:
@@ -186,6 +189,9 @@ def build_learning_tools(context: ToolContext) -> list[BaseTool]:
                     context.user_id, bounded_horizon, selected_course
                 ),
             )
+            if selected_course:
+                profile = {**profile, "courses": [c for c in profile.get("courses", [])
+                                                 if c["course_id"] == selected_course]}
             items = _build_plan_items(profile, performance, deadlines, bounded_horizon)
             plan = {"items": items, "evidence": {"deadlines": deadlines}}
             record = await context.agent.save_study_plan(

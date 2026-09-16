@@ -1,0 +1,1013 @@
+{
+  "results_sha256": "31fdae225fa90d031b451ac7392539009155eb1d8ab667bc29b1bca86fa7b998",
+  "paragraphs": [
+    {
+      "id": "route-rag::v01:0",
+      "text": "HTML means HyperText Markup Language. HTML structures web documents with elements and attributes. [Source b9ab12db-6e14-4758-bc4c-65a0e3a574b7]",
+      "citations": [
+        {
+          "source_id": "b9ab12db-6e14-4758-bc4c-65a0e3a574b7",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 1,
+          "excerpt": "HTML means HyperText Markup Language. HTML structures web documents with elements and attributes."
+        }
+      ],
+      "label": null,
+      "reviewer": null
+    },
+    {
+      "id": "route-rag::v02:0",
+      "text": "HTML means HyperText Markup Language. HTML structures web documents with elements and attributes. [Source b9ab12db-6e14-4758-bc4c-65a0e3a574b7]",
+      "citations": [
+        {
+          "source_id": "b9ab12db-6e14-4758-bc4c-65a0e3a574b7",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 1,
+          "excerpt": "HTML means HyperText Markup Language. HTML structures web documents with elements and attributes."
+        }
+      ],
+      "label": null,
+      "reviewer": null
+    },
+    {
+      "id": "route-rag::v03:0",
+      "text": "HTML means HyperText Markup Language. HTML structures web documents with elements and attributes. [Source b9ab12db-6e14-4758-bc4c-65a0e3a574b7]",
+      "citations": [
+        {
+          "source_id": "b9ab12db-6e14-4758-bc4c-65a0e3a574b7",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 1,
+          "excerpt": "HTML means HyperText Markup Language. HTML structures web documents with elements and attributes."
+        }
+      ],
+      "label": null,
+      "reviewer": null
+    },
+    {
+      "id": "route-rag::v04:0",
+      "text": "The handbook states that HTML stands for HyperText Markup Language. [Source b9ab12db-6e14-4758-bc4c-65a0e3a574b7]",
+      "citations": [
+        {
+          "source_id": "b9ab12db-6e14-4758-bc4c-65a0e3a574b7",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 1,
+          "excerpt": "HTML means HyperText Markup Language. HTML structures web documents with elements and attributes."
+        }
+      ],
+      "label": null,
+      "reviewer": null
+    },
+    {
+      "id": "route-rag::v05:0",
+      "text": "HTML means HyperText Markup Language. HTML structures web documents with elements and attributes. [Source b9ab12db-6e14-4758-bc4c-65a0e3a574b7]",
+      "citations": [
+        {
+          "source_id": "b9ab12db-6e14-4758-bc4c-65a0e3a574b7",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 1,
+          "excerpt": "HTML means HyperText Markup Language. HTML structures web documents with elements and attributes."
+        },
+        {
+          "source_id": "90e6eeed-6c81-4297-8e5a-f995cb24f65b",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 3,
+          "excerpt": "Semantic HTML elements such as nav, main, article, and footer communicate document meaning."
+        }
+      ],
+      "label": null,
+      "reviewer": null
+    },
+    {
+      "id": "route-rag::v05:1",
+      "text": "Semantic HTML elements such as nav, main, article, and footer communicate document meaning. [Source 90e6eeed-6c81-4297-8e5a-f995cb24f65b]",
+      "citations": [
+        {
+          "source_id": "b9ab12db-6e14-4758-bc4c-65a0e3a574b7",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 1,
+          "excerpt": "HTML means HyperText Markup Language. HTML structures web documents with elements and attributes."
+        },
+        {
+          "source_id": "90e6eeed-6c81-4297-8e5a-f995cb24f65b",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 3,
+          "excerpt": "Semantic HTML elements such as nav, main, article, and footer communicate document meaning."
+        }
+      ],
+      "label": null,
+      "reviewer": null
+    },
+    {
+      "id": "route-rag::v06:0",
+      "text": "HTML means HyperText Markup Language. HTML structures web documents with elements and attributes. [Source b9ab12db-6e14-4758-bc4c-65a0e3a574b7]",
+      "citations": [
+        {
+          "source_id": "b9ab12db-6e14-4758-bc4c-65a0e3a574b7",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 1,
+          "excerpt": "HTML means HyperText Markup Language. HTML structures web documents with elements and attributes."
+        }
+      ],
+      "label": null,
+      "reviewer": null
+    },
+    {
+      "id": "route-rag::v07:0",
+      "text": "HTML means HyperText Markup Language. HTML structures web documents with elements and attributes. [Source b9ab12db-6e14-4758-bc4c-65a0e3a574b7]",
+      "citations": [
+        {
+          "source_id": "b9ab12db-6e14-4758-bc4c-65a0e3a574b7",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 1,
+          "excerpt": "HTML means HyperText Markup Language. HTML structures web documents with elements and attributes."
+        }
+      ],
+      "label": null,
+      "reviewer": null
+    },
+    {
+      "id": "route-rag::v08:0",
+      "text": "HTML means HyperText Markup Language. HTML structures web documents with elements and attributes. [Source b9ab12db-6e14-4758-bc4c-65a0e3a574b7]",
+      "citations": [
+        {
+          "source_id": "b9ab12db-6e14-4758-bc4c-65a0e3a574b7",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 1,
+          "excerpt": "HTML means HyperText Markup Language. HTML structures web documents with elements and attributes."
+        },
+        {
+          "source_id": "90e6eeed-6c81-4297-8e5a-f995cb24f65b",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 3,
+          "excerpt": "Semantic HTML elements such as nav, main, article, and footer communicate document meaning."
+        }
+      ],
+      "label": null,
+      "reviewer": null
+    },
+    {
+      "id": "route-rag::v08:1",
+      "text": "Semantic HTML elements such as nav, main, article, and footer communicate document meaning. [Source 90e6eeed-6c81-4297-8e5a-f995cb24f65b]",
+      "citations": [
+        {
+          "source_id": "b9ab12db-6e14-4758-bc4c-65a0e3a574b7",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 1,
+          "excerpt": "HTML means HyperText Markup Language. HTML structures web documents with elements and attributes."
+        },
+        {
+          "source_id": "90e6eeed-6c81-4297-8e5a-f995cb24f65b",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 3,
+          "excerpt": "Semantic HTML elements such as nav, main, article, and footer communicate document meaning."
+        }
+      ],
+      "label": null,
+      "reviewer": null
+    },
+    {
+      "id": "route-rag::v09:0",
+      "text": "HTML means HyperText Markup Language. HTML structures web documents with elements and attributes. [Source b9ab12db-6e14-4758-bc4c-65a0e3a574b7]",
+      "citations": [
+        {
+          "source_id": "b9ab12db-6e14-4758-bc4c-65a0e3a574b7",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 1,
+          "excerpt": "HTML means HyperText Markup Language. HTML structures web documents with elements and attributes."
+        }
+      ],
+      "label": null,
+      "reviewer": null
+    },
+    {
+      "id": "route-rag::v10:0",
+      "text": "The Web Foundations Handbook page 1 explains that HTML means HyperText Markup Language and structures web documents with elements and attributes. [Source b9ab12db-6e14-4758-bc4c-65a0e3a574b7]",
+      "citations": [
+        {
+          "source_id": "b9ab12db-6e14-4758-bc4c-65a0e3a574b7",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 1,
+          "excerpt": "HTML means HyperText Markup Language. HTML structures web documents with elements and attributes."
+        }
+      ],
+      "label": null,
+      "reviewer": null
+    },
+    {
+      "id": "route-rag::v11:0",
+      "text": "HTML means HyperText Markup Language. HTML structures web documents with elements and attributes. [Source b9ab12db-6e14-4758-bc4c-65a0e3a574b7]",
+      "citations": [
+        {
+          "source_id": "b9ab12db-6e14-4758-bc4c-65a0e3a574b7",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 1,
+          "excerpt": "HTML means HyperText Markup Language. HTML structures web documents with elements and attributes."
+        }
+      ],
+      "label": null,
+      "reviewer": null
+    },
+    {
+      "id": "cite-css::v01:0",
+      "text": "The CSS cascade resolves style conflicts by origin, specificity, and source order. [Source 902ad4c3-1402-48e8-be1d-9e84eda60b24]",
+      "citations": [
+        {
+          "source_id": "902ad4c3-1402-48e8-be1d-9e84eda60b24",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 2,
+          "excerpt": "The CSS cascade resolves style conflicts by origin, specificity, and source order."
+        }
+      ],
+      "label": null,
+      "reviewer": null
+    },
+    {
+      "id": "cite-css::v02:0",
+      "text": "The CSS cascade resolves style conflicts by origin, specificity, and source order. [Source 902ad4c3-1402-48e8-be1d-9e84eda60b24]",
+      "citations": [
+        {
+          "source_id": "902ad4c3-1402-48e8-be1d-9e84eda60b24",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 2,
+          "excerpt": "The CSS cascade resolves style conflicts by origin, specificity, and source order."
+        }
+      ],
+      "label": null,
+      "reviewer": null
+    },
+    {
+      "id": "cite-css::v03:0",
+      "text": "The CSS cascade resolves style conflicts by considering three factors: origin, specificity, and source order. These principles determine which styles are applied when multiple rules target the same element. [Source 902ad4c3-1402-48e8-be1d-9e84eda60b24]",
+      "citations": [
+        {
+          "source_id": "902ad4c3-1402-48e8-be1d-9e84eda60b24",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 2,
+          "excerpt": "The CSS cascade resolves style conflicts by origin, specificity, and source order."
+        }
+      ],
+      "label": null,
+      "reviewer": null
+    },
+    {
+      "id": "cite-css::v05:0",
+      "text": "The CSS cascade resolves style conflicts by origin, specificity, and source order. [Source 902ad4c3-1402-48e8-be1d-9e84eda60b24]",
+      "citations": [
+        {
+          "source_id": "902ad4c3-1402-48e8-be1d-9e84eda60b24",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 2,
+          "excerpt": "The CSS cascade resolves style conflicts by origin, specificity, and source order."
+        }
+      ],
+      "label": null,
+      "reviewer": null
+    },
+    {
+      "id": "cite-css::v06:0",
+      "text": "The CSS cascade resolves style conflicts by origin, specificity, and source order. [Source 902ad4c3-1402-48e8-be1d-9e84eda60b24]",
+      "citations": [
+        {
+          "source_id": "902ad4c3-1402-48e8-be1d-9e84eda60b24",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 2,
+          "excerpt": "The CSS cascade resolves style conflicts by origin, specificity, and source order."
+        }
+      ],
+      "label": null,
+      "reviewer": null
+    },
+    {
+      "id": "cite-css::v07:0",
+      "text": "The CSS cascade resolves style conflicts by origin, specificity, and source order. [Source 902ad4c3-1402-48e8-be1d-9e84eda60b24]",
+      "citations": [
+        {
+          "source_id": "902ad4c3-1402-48e8-be1d-9e84eda60b24",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 2,
+          "excerpt": "The CSS cascade resolves style conflicts by origin, specificity, and source order."
+        }
+      ],
+      "label": null,
+      "reviewer": null
+    },
+    {
+      "id": "cite-css::v08:0",
+      "text": "The CSS cascade resolves style conflicts by origin, specificity, and source order. [Source 902ad4c3-1402-48e8-be1d-9e84eda60b24]",
+      "citations": [
+        {
+          "source_id": "902ad4c3-1402-48e8-be1d-9e84eda60b24",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 2,
+          "excerpt": "The CSS cascade resolves style conflicts by origin, specificity, and source order."
+        }
+      ],
+      "label": null,
+      "reviewer": null
+    },
+    {
+      "id": "cite-css::v09:0",
+      "text": "The CSS cascade resolves style conflicts by origin, specificity, and source order. [Source 902ad4c3-1402-48e8-be1d-9e84eda60b24]",
+      "citations": [
+        {
+          "source_id": "902ad4c3-1402-48e8-be1d-9e84eda60b24",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 2,
+          "excerpt": "The CSS cascade resolves style conflicts by origin, specificity, and source order."
+        }
+      ],
+      "label": null,
+      "reviewer": null
+    },
+    {
+      "id": "cite-css::v10:0",
+      "text": "The PDF explains conflicting CSS declarations in the context of the CSS cascade, which resolves style conflicts through factors like origin, specificity, and source order. [Source 902ad4c3-1402-48e8-be1d-9e84eda60b24]",
+      "citations": [
+        {
+          "source_id": "902ad4c3-1402-48e8-be1d-9e84eda60b24",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 2,
+          "excerpt": "The CSS cascade resolves style conflicts by origin, specificity, and source order."
+        }
+      ],
+      "label": null,
+      "reviewer": null
+    },
+    {
+      "id": "cite-css::v11:0",
+      "text": "The CSS cascade resolves style conflicts by origin, specificity, and source order. [Source 902ad4c3-1402-48e8-be1d-9e84eda60b24]",
+      "citations": [
+        {
+          "source_id": "902ad4c3-1402-48e8-be1d-9e84eda60b24",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 2,
+          "excerpt": "The CSS cascade resolves style conflicts by origin, specificity, and source order."
+        }
+      ],
+      "label": null,
+      "reviewer": null
+    },
+    {
+      "id": "cite-semantic-html::v01:0",
+      "text": "The semantic elements mentioned in your course PDF include nav, main, article, and footer. [Source 90e6eeed-6c81-4297-8e5a-f995cb24f65b]",
+      "citations": [
+        {
+          "source_id": "90e6eeed-6c81-4297-8e5a-f995cb24f65b",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 3,
+          "excerpt": "Semantic HTML elements such as nav, main, article, and footer communicate document meaning."
+        }
+      ],
+      "label": null,
+      "reviewer": null
+    },
+    {
+      "id": "cite-semantic-html::v02:0",
+      "text": "Semantic HTML elements such as nav, main, article, and footer communicate document meaning. [Source 90e6eeed-6c81-4297-8e5a-f995cb24f65b]",
+      "citations": [
+        {
+          "source_id": "90e6eeed-6c81-4297-8e5a-f995cb24f65b",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 3,
+          "excerpt": "Semantic HTML elements such as nav, main, article, and footer communicate document meaning."
+        }
+      ],
+      "label": null,
+      "reviewer": null
+    },
+    {
+      "id": "cite-semantic-html::v03:0",
+      "text": "Semantic HTML elements such as nav, main, article, and footer communicate document meaning by providing context about the content's purpose to both browsers and developers. [Source 90e6eeed-6c81-4297-8e5a-f995cb24f65b]",
+      "citations": [
+        {
+          "source_id": "90e6eeed-6c81-4297-8e5a-f995cb24f65b",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 3,
+          "excerpt": "Semantic HTML elements such as nav, main, article, and footer communicate document meaning."
+        }
+      ],
+      "label": null,
+      "reviewer": null
+    },
+    {
+      "id": "cite-semantic-html::v04:0",
+      "text": "The PDF provides examples of semantic HTML elements such as nav, main, article, and footer as meaningful tags that communicate document meaning. [Source 90e6eeed-6c81-4297-8e5a-f995cb24f65b]",
+      "citations": [
+        {
+          "source_id": "90e6eeed-6c81-4297-8e5a-f995cb24f65b",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 3,
+          "excerpt": "Semantic HTML elements such as nav, main, article, and footer communicate document meaning."
+        }
+      ],
+      "label": null,
+      "reviewer": null
+    },
+    {
+      "id": "cite-semantic-html::v05:0",
+      "text": "Semantic HTML elements such as nav, main, article, and footer communicate document meaning. [Source 90e6eeed-6c81-4297-8e5a-f995cb24f65b]",
+      "citations": [
+        {
+          "source_id": "90e6eeed-6c81-4297-8e5a-f995cb24f65b",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 3,
+          "excerpt": "Semantic HTML elements such as nav, main, article, and footer communicate document meaning."
+        }
+      ],
+      "label": null,
+      "reviewer": null
+    },
+    {
+      "id": "cite-semantic-html::v06:0",
+      "text": "Semantic HTML elements such as nav, main, article, and footer communicate document meaning. [Source 90e6eeed-6c81-4297-8e5a-f995cb24f65b]",
+      "citations": [
+        {
+          "source_id": "90e6eeed-6c81-4297-8e5a-f995cb24f65b",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 3,
+          "excerpt": "Semantic HTML elements such as nav, main, article, and footer communicate document meaning."
+        }
+      ],
+      "label": null,
+      "reviewer": null
+    },
+    {
+      "id": "cite-semantic-html::v07:0",
+      "text": "Semantic HTML elements such as nav, main, article, and footer communicate document meaning. [Source 90e6eeed-6c81-4297-8e5a-f995cb24f65b]",
+      "citations": [
+        {
+          "source_id": "90e6eeed-6c81-4297-8e5a-f995cb24f65b",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 3,
+          "excerpt": "Semantic HTML elements such as nav, main, article, and footer communicate document meaning."
+        }
+      ],
+      "label": null,
+      "reviewer": null
+    },
+    {
+      "id": "cite-semantic-html::v08:0",
+      "text": "Semantic HTML elements such as nav, main, article, and footer communicate document meaning. [Source 90e6eeed-6c81-4297-8e5a-f995cb24f65b]",
+      "citations": [
+        {
+          "source_id": "90e6eeed-6c81-4297-8e5a-f995cb24f65b",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 3,
+          "excerpt": "Semantic HTML elements such as nav, main, article, and footer communicate document meaning."
+        }
+      ],
+      "label": null,
+      "reviewer": null
+    },
+    {
+      "id": "cite-semantic-html::v09:0",
+      "text": "The Semantic HTML elements nav, main, article, and footer are mentioned in the Web Foundations Handbook on page 3. [Source 90e6eeed-6c81-4297-8e5a-f995cb24f65b]",
+      "citations": [
+        {
+          "source_id": "90e6eeed-6c81-4297-8e5a-f995cb24f65b",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 3,
+          "excerpt": "Semantic HTML elements such as nav, main, article, and footer communicate document meaning."
+        }
+      ],
+      "label": null,
+      "reviewer": null
+    },
+    {
+      "id": "cite-semantic-html::v10:0",
+      "text": "Semantic HTML elements such as nav, main, article, and footer communicate document meaning. [Source 90e6eeed-6c81-4297-8e5a-f995cb24f65b]",
+      "citations": [
+        {
+          "source_id": "90e6eeed-6c81-4297-8e5a-f995cb24f65b",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 3,
+          "excerpt": "Semantic HTML elements such as nav, main, article, and footer communicate document meaning."
+        }
+      ],
+      "label": null,
+      "reviewer": null
+    },
+    {
+      "id": "cite-semantic-html::v11:0",
+      "text": "Semantic HTML elements such as nav, main, article, and footer communicate document meaning. [Source 90e6eeed-6c81-4297-8e5a-f995cb24f65b]",
+      "citations": [
+        {
+          "source_id": "90e6eeed-6c81-4297-8e5a-f995cb24f65b",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 3,
+          "excerpt": "Semantic HTML elements such as nav, main, article, and footer communicate document meaning."
+        }
+      ],
+      "label": null,
+      "reviewer": null
+    },
+    {
+      "id": "cite-flexbox::v02:0",
+      "text": "Flexbox is described as a one-dimensional layout system for arranging items along a row or column on page 4 of the Web Foundations Handbook. [Source 11c5388f-53ec-4b83-ae9b-0af610ea8bf2]",
+      "citations": [
+        {
+          "source_id": "11c5388f-53ec-4b83-ae9b-0af610ea8bf2",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 4,
+          "excerpt": "Flexbox is a one-dimensional layout system for arranging items along a row or column."
+        }
+      ],
+      "label": null,
+      "reviewer": null
+    },
+    {
+      "id": "cite-flexbox::v03:0",
+      "text": "Flexbox is a one-dimensional layout system for arranging items along a row or column. [Source 11c5388f-53ec-4b83-ae9b-0af610ea8bf2]",
+      "citations": [
+        {
+          "source_id": "11c5388f-53ec-4b83-ae9b-0af610ea8bf2",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 4,
+          "excerpt": "Flexbox is a one-dimensional layout system for arranging items along a row or column."
+        }
+      ],
+      "label": null,
+      "reviewer": null
+    },
+    {
+      "id": "cite-flexbox::v04:0",
+      "text": "Flexbox is a one-dimensional layout system according to the source. [Source 11c5388f-53ec-4b83-ae9b-0af610ea8bf2]",
+      "citations": [
+        {
+          "source_id": "11c5388f-53ec-4b83-ae9b-0af610ea8bf2",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 4,
+          "excerpt": "Flexbox is a one-dimensional layout system for arranging items along a row or column."
+        }
+      ],
+      "label": null,
+      "reviewer": null
+    },
+    {
+      "id": "cite-flexbox::v05:0",
+      "text": "Flexbox is a one-dimensional layout system for arranging items along a row or column. [Source 11c5388f-53ec-4b83-ae9b-0af610ea8bf2]",
+      "citations": [
+        {
+          "source_id": "11c5388f-53ec-4b83-ae9b-0af610ea8bf2",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 4,
+          "excerpt": "Flexbox is a one-dimensional layout system for arranging items along a row or column."
+        }
+      ],
+      "label": null,
+      "reviewer": null
+    },
+    {
+      "id": "cite-flexbox::v06:0",
+      "text": "Flexbox is a one-dimensional layout system for arranging items along a row or column. [Source 11c5388f-53ec-4b83-ae9b-0af610ea8bf2]",
+      "citations": [
+        {
+          "source_id": "11c5388f-53ec-4b83-ae9b-0af610ea8bf2",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 4,
+          "excerpt": "Flexbox is a one-dimensional layout system for arranging items along a row or column."
+        }
+      ],
+      "label": null,
+      "reviewer": null
+    },
+    {
+      "id": "cite-flexbox::v07:0",
+      "text": "Flexbox is a one-dimensional layout system for arranging items along a row or column. [Source 11c5388f-53ec-4b83-ae9b-0af610ea8bf2]",
+      "citations": [
+        {
+          "source_id": "11c5388f-53ec-4b83-ae9b-0af610ea8bf2",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 4,
+          "excerpt": "Flexbox is a one-dimensional layout system for arranging items along a row or column."
+        }
+      ],
+      "label": null,
+      "reviewer": null
+    },
+    {
+      "id": "cite-flexbox::v08:0",
+      "text": "Flexbox is a one-dimensional layout system for arranging items along a row or column. [Source 11c5388f-53ec-4b83-ae9b-0af610ea8bf2]",
+      "citations": [
+        {
+          "source_id": "11c5388f-53ec-4b83-ae9b-0af610ea8bf2",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 4,
+          "excerpt": "Flexbox is a one-dimensional layout system for arranging items along a row or column."
+        }
+      ],
+      "label": null,
+      "reviewer": null
+    },
+    {
+      "id": "cite-flexbox::v09:0",
+      "text": "The material explains one-dimensional layout in the context of Flexbox, which is described as a system for arranging items along a row or column. [Source 11c5388f-53ec-4b83-ae9b-0af610ea8bf2]",
+      "citations": [
+        {
+          "source_id": "11c5388f-53ec-4b83-ae9b-0af610ea8bf2",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 4,
+          "excerpt": "Flexbox is a one-dimensional layout system for arranging items along a row or column."
+        }
+      ],
+      "label": null,
+      "reviewer": null
+    },
+    {
+      "id": "cite-flexbox::v10:0",
+      "text": "Flexbox is a one-dimensional layout system for arranging items along a row or column. [Source 11c5388f-53ec-4b83-ae9b-0af610ea8bf2]",
+      "citations": [
+        {
+          "source_id": "11c5388f-53ec-4b83-ae9b-0af610ea8bf2",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 4,
+          "excerpt": "Flexbox is a one-dimensional layout system for arranging items along a row or column."
+        }
+      ],
+      "label": null,
+      "reviewer": null
+    },
+    {
+      "id": "cite-flexbox::v11:0",
+      "text": "Flexbox is a one-dimensional layout system designed for arranging items along a row or column. [Source 11c5388f-53ec-4b83-ae9b-0af610ea8bf2]",
+      "citations": [
+        {
+          "source_id": "11c5388f-53ec-4b83-ae9b-0af610ea8bf2",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 4,
+          "excerpt": "Flexbox is a one-dimensional layout system for arranging items along a row or column."
+        }
+      ],
+      "label": null,
+      "reviewer": null
+    },
+    {
+      "id": "cite-event-loop::v01:0",
+      "text": "The JavaScript event loop coordinates the call stack, task queue, and asynchronous callbacks. [Source 5882e873-2186-43cf-bb14-f8d34b676541]",
+      "citations": [
+        {
+          "source_id": "5882e873-2186-43cf-bb14-f8d34b676541",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 5,
+          "excerpt": "The JavaScript event loop coordinates the call stack, task queue, and asynchronous callbacks."
+        }
+      ],
+      "label": null,
+      "reviewer": null
+    },
+    {
+      "id": "cite-event-loop::v02:0",
+      "text": "The JavaScript event loop coordinates the call stack, task queue, and asynchronous callbacks. [Source 5882e873-2186-43cf-bb14-f8d34b676541]",
+      "citations": [
+        {
+          "source_id": "5882e873-2186-43cf-bb14-f8d34b676541",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 5,
+          "excerpt": "The JavaScript event loop coordinates the call stack, task queue, and asynchronous callbacks."
+        }
+      ],
+      "label": null,
+      "reviewer": null
+    },
+    {
+      "id": "cite-event-loop::v03:0",
+      "text": "The JavaScript event loop manages asynchronous callbacks by coordinating the call stack, task queue, and asynchronous operations to ensure non-blocking execution of code. [Source 5882e873-2186-43cf-bb14-f8d34b676541]",
+      "citations": [
+        {
+          "source_id": "5882e873-2186-43cf-bb14-f8d34b676541",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 5,
+          "excerpt": "The JavaScript event loop coordinates the call stack, task queue, and asynchronous callbacks."
+        }
+      ],
+      "label": null,
+      "reviewer": null
+    },
+    {
+      "id": "cite-event-loop::v04:0",
+      "text": "The JavaScript event loop coordinates the call stack, task queue, and asynchronous callbacks. [Source 5882e873-2186-43cf-bb14-f8d34b676541]",
+      "citations": [
+        {
+          "source_id": "5882e873-2186-43cf-bb14-f8d34b676541",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 5,
+          "excerpt": "The JavaScript event loop coordinates the call stack, task queue, and asynchronous callbacks."
+        }
+      ],
+      "label": null,
+      "reviewer": null
+    },
+    {
+      "id": "cite-event-loop::v06:0",
+      "text": "The task queue is a component managed by the JavaScript event loop, which coordinates the call stack, task queue, and asynchronous callbacks to ensure proper execution order of tasks. [Source 5882e873-2186-43cf-bb14-f8d34b676541]",
+      "citations": [
+        {
+          "source_id": "5882e873-2186-43cf-bb14-f8d34b676541",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 5,
+          "excerpt": "The JavaScript event loop coordinates the call stack, task queue, and asynchronous callbacks."
+        }
+      ],
+      "label": null,
+      "reviewer": null
+    },
+    {
+      "id": "cite-event-loop::v07:0",
+      "text": "The JavaScript event loop manages asynchronous operations by coordinating the call stack, task queue, and asynchronous callbacks to ensure non-blocking execution of code. [Source 5882e873-2186-43cf-bb14-f8d34b676541]",
+      "citations": [
+        {
+          "source_id": "5882e873-2186-43cf-bb14-f8d34b676541",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 5,
+          "excerpt": "The JavaScript event loop coordinates the call stack, task queue, and asynchronous callbacks."
+        }
+      ],
+      "label": null,
+      "reviewer": null
+    },
+    {
+      "id": "cite-event-loop::v08:0",
+      "text": "According to the source, callbacks are coordinated by the JavaScript event loop, which manages the call stack, task queue, and asynchronous callbacks. [Source 5882e873-2186-43cf-bb14-f8d34b676541]",
+      "citations": [
+        {
+          "source_id": "5882e873-2186-43cf-bb14-f8d34b676541",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 5,
+          "excerpt": "The JavaScript event loop coordinates the call stack, task queue, and asynchronous callbacks."
+        }
+      ],
+      "label": null,
+      "reviewer": null
+    },
+    {
+      "id": "cite-event-loop::v09:0",
+      "text": "The JavaScript event loop manages the coordination between the call stack, task queue, and asynchronous callbacks, ensuring proper execution order of synchronous and asynchronous operations. [Source 5882e873-2186-43cf-bb14-f8d34b676541]",
+      "citations": [
+        {
+          "source_id": "5882e873-2186-43cf-bb14-f8d34b676541",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 5,
+          "excerpt": "The JavaScript event loop coordinates the call stack, task queue, and asynchronous callbacks."
+        }
+      ],
+      "label": null,
+      "reviewer": null
+    },
+    {
+      "id": "cite-event-loop::v10:0",
+      "text": "The JavaScript event loop coordinates the call stack, task queue, and asynchronous callbacks to manage execution in non-blocking environments. [Source 5882e873-2186-43cf-bb14-f8d34b676541]",
+      "citations": [
+        {
+          "source_id": "5882e873-2186-43cf-bb14-f8d34b676541",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 5,
+          "excerpt": "The JavaScript event loop coordinates the call stack, task queue, and asynchronous callbacks."
+        }
+      ],
+      "label": null,
+      "reviewer": null
+    },
+    {
+      "id": "cite-event-loop::v11:0",
+      "text": "The JavaScript event loop coordinates the call stack, task queue, and asynchronous callbacks. [Source 5882e873-2186-43cf-bb14-f8d34b676541]",
+      "citations": [
+        {
+          "source_id": "5882e873-2186-43cf-bb14-f8d34b676541",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 5,
+          "excerpt": "The JavaScript event loop coordinates the call stack, task queue, and asynchronous callbacks."
+        }
+      ],
+      "label": null,
+      "reviewer": null
+    },
+    {
+      "id": "cite-source-summary::v04:0",
+      "text": "HTML structures web documents using elements and attributes to define content and structure. [Source b9ab12db-6e14-4758-bc4c-65a0e3a574b7]",
+      "citations": [
+        {
+          "source_id": "b9ab12db-6e14-4758-bc4c-65a0e3a574b7",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 1,
+          "excerpt": "HTML means HyperText Markup Language. HTML structures web documents with elements and attributes."
+        },
+        {
+          "source_id": "90e6eeed-6c81-4297-8e5a-f995cb24f65b",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 3,
+          "excerpt": "Semantic HTML elements such as nav, main, article, and footer communicate document meaning."
+        }
+      ],
+      "label": null,
+      "reviewer": null
+    },
+    {
+      "id": "cite-source-summary::v04:1",
+      "text": "Semantic HTML elements like nav, main, article, and footer enhance document meaning through structured semantics. [Source 90e6eeed-6c81-4297-8e5a-f995cb24f65b]",
+      "citations": [
+        {
+          "source_id": "b9ab12db-6e14-4758-bc4c-65a0e3a574b7",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 1,
+          "excerpt": "HTML means HyperText Markup Language. HTML structures web documents with elements and attributes."
+        },
+        {
+          "source_id": "90e6eeed-6c81-4297-8e5a-f995cb24f65b",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 3,
+          "excerpt": "Semantic HTML elements such as nav, main, article, and footer communicate document meaning."
+        }
+      ],
+      "label": null,
+      "reviewer": null
+    },
+    {
+      "id": "cite-source-summary::v08:0",
+      "text": "The Web Foundations Handbook (page 3) emphasizes the use of semantic HTML elements like nav, main, article, and footer to convey document structure and meaning. [Source 90e6eeed-6c81-4297-8e5a-f995cb24f65b]",
+      "citations": [
+        {
+          "source_id": "90e6eeed-6c81-4297-8e5a-f995cb24f65b",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 3,
+          "excerpt": "Semantic HTML elements such as nav, main, article, and footer communicate document meaning."
+        }
+      ],
+      "label": null,
+      "reviewer": null
+    },
+    {
+      "id": "cite-source-summary::v09:0",
+      "text": "HTML, standing for HyperText Markup Language, is used to structure web documents through elements and attributes. [Source b9ab12db-6e14-4758-bc4c-65a0e3a574b7]",
+      "citations": [
+        {
+          "source_id": "b9ab12db-6e14-4758-bc4c-65a0e3a574b7",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 1,
+          "excerpt": "HTML means HyperText Markup Language. HTML structures web documents with elements and attributes."
+        },
+        {
+          "source_id": "90e6eeed-6c81-4297-8e5a-f995cb24f65b",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 3,
+          "excerpt": "Semantic HTML elements such as nav, main, article, and footer communicate document meaning."
+        }
+      ],
+      "label": null,
+      "reviewer": null
+    },
+    {
+      "id": "cite-source-summary::v09:1",
+      "text": "Semantic HTML elements like nav, main, article, and footer enhance document meaning by providing context to content structure. [Source 90e6eeed-6c81-4297-8e5a-f995cb24f65b]",
+      "citations": [
+        {
+          "source_id": "b9ab12db-6e14-4758-bc4c-65a0e3a574b7",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 1,
+          "excerpt": "HTML means HyperText Markup Language. HTML structures web documents with elements and attributes."
+        },
+        {
+          "source_id": "90e6eeed-6c81-4297-8e5a-f995cb24f65b",
+          "document_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191",
+          "content_id": "eval-content-handbook",
+          "title": "Web Foundations Handbook",
+          "page": 3,
+          "excerpt": "Semantic HTML elements such as nav, main, article, and footer communicate document meaning."
+        }
+      ],
+      "label": null,
+      "reviewer": null
+    }
+  ]
+}

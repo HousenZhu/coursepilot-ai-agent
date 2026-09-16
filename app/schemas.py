@@ -14,6 +14,8 @@ class AgentRunRequest(BaseModel):
 
 
 class Citation(BaseModel):
+    source_id: str | None = None
+    document_version: str | None = None
     content_id: str
     title: str
     page: int | None = None
@@ -37,6 +39,9 @@ class StudyPlan(BaseModel):
 
 
 class AgentFinalResponse(BaseModel):
+    run_id: UUID | None = None
+    outcome: Literal["answer", "refuse", "clarify", "no_records", "dependency_failure"] = "answer"
+    facts: list[dict] = Field(default_factory=list)
     conversation_id: UUID
     answer_markdown: str
     citations: list[Citation] = Field(default_factory=list)
@@ -49,6 +54,8 @@ class ConversationMessage(BaseModel):
     role: Literal["user", "assistant"]
     content: str
     created_at: datetime
+    citations: list[Citation] = Field(default_factory=list)
+    studyPlan: StudyPlan | None = None
 
 
 class ConversationResponse(BaseModel):

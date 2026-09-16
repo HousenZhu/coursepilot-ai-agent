@@ -1,0 +1,7 @@
+global:
+  scrape_interval: 15s
+scrape_configs:
+  - job_name: coursepilot
+    metrics_path: /metrics
+    static_configs:
+      - targets: [eval-agent:8000]

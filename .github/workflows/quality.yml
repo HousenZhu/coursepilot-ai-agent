@@ -1,0 +1,21 @@
+name: Agent Quality
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker compose -f docker-compose.test.yml build tests
+      - run: docker compose -f docker-compose.test.yml run --rm --entrypoint python tests -m ruff check app tests evals
+      - run: docker compose -f docker-compose.test.yml run --rm --entrypoint python tests -m mypy app --ignore-missing-imports
+      - run: docker compose -f docker-compose.test.yml run --rm tests
+      - run: docker compose -f docker-compose.test.yml run --rm -e RUN_INTEGRATION_TESTS=1 --entrypoint python tests -m pytest -q tests/test_tenant_isolation.py
+      - if: always()
+        run: docker compose -f docker-compose.test.yml down -v

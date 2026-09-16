@@ -5,6 +5,8 @@ import asyncio
 import json
 import os
 import platform
+import hashlib
+import re
 import time
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
@@ -17,13 +19,15 @@ import jwt
 
 from evals.dataset import dataset_sha256, expand_templates, load_templates
 from evals.scoring import aggregate_results, score_case
+from evals.audit import atomic_json, journal, snapshot_source, dependency_versions, fixture_snapshot, reset_case_plans
 
 
 TARGETS = {
-    "task_success": 0.88,
-    "citation_precision": 0.95,
-    "ttft_p50_seconds": 1.4,
+    "task_success": 0.85,
+    "citation_precision": 0.90,
+    "citation_coverage": 0.80,
 }
+ROOT = Path(__file__).resolve().parent.parent
 
 
 def create_token(user_id: str) -> str:
@@ -57,6 +61,9 @@ async def _read_sse(
     final: dict[str, Any] = {}
     error: dict[str, Any] | None = None
     observed_tools: set[str] = set()
+    streamed_text: list[str] = []
+    visible_events: list[dict[str, Any]] = []
+    http_error: Any = None
     status_code: int | None = None
     payload: dict[str, Any] = {"message": message, "course_id": course_id}
     if conversation_id:
@@ -70,6 +77,12 @@ async def _read_sse(
             json=payload,
         ) as response:
             status_code = response.status_code
+            if status_code != 200:
+                await response.aread()
+                try:
+                    http_error = response.json()
+                except ValueError:
+                    http_error = response.text
             response.raise_for_status()
             event_name = "message"
             async for line in response.aiter_lines():
@@ -79,8 +92,11 @@ async def _read_sse(
                 if not line.startswith("data:"):
                     continue
                 data = json.loads(line.removeprefix("data:").strip())
-                if event_name == "token" and first_token_at is None:
-                    first_token_at = time.perf_counter()
+                visible_events.append({"event": event_name, "data": data})
+                if event_name == "token" and data.get("delta"):
+                    streamed_text.append(str(data["delta"]))
+                    if first_token_at is None:
+                        first_token_at = time.perf_counter()
                 elif event_name == "tool_status" and data.get("status") == "started":
                     observed_tools.add(str(data.get("name")))
                 elif event_name == "final":
@@ -94,7 +110,10 @@ async def _read_sse(
     ended = time.perf_counter()
     return {
         "http_status": status_code,
+        "http_error": http_error,
+        "visible_events": visible_events,
         "observed_tools": sorted(observed_tools),
+        "streamed_text": "".join(streamed_text),
         "final": final,
         "error": error,
         "ttft_seconds": first_token_at - started if first_token_at is not None else None,
@@ -108,6 +127,8 @@ async def run_case(
 ) -> dict[str, Any]:
     conversation_id: str | None = None
     observation: dict[str, Any] = {}
+    all_streamed: list[str] = []
+    all_visible: list[dict[str, Any]] = []
     course_id = case.get("course_id")
     if course_id == "${COURSE_ID}":
         course_id = os.getenv("EVAL_COURSE_ID")
@@ -121,9 +142,13 @@ async def run_case(
             conversation_id=conversation_id,
         )
         final = observation.get("final") or {}
+        all_streamed.append(observation.get("streamed_text", ""))
+        all_visible.extend(observation.get("visible_events", []))
         conversation_id = final.get("conversation_id", conversation_id)
         if observation.get("error"):
             break
+    observation["streamed_text"] = "\n".join(all_streamed)
+    observation["visible_events"] = all_visible
     return score_case(case, observation)
 
 
@@ -176,6 +201,10 @@ def _format_rate(value: float | None) -> str:
     return "n/a" if value is None else f"{value * 100:.1f}%"
 
 
+def _format_seconds(value: float | None) -> str:
+    return "N/A" if value is None else f"{value:.3f}s"
+
+
 def build_report(run_id: str, split: str, metrics: dict[str, Any], manifest: dict[str, Any]) -> str:
     lines = [
         f"# CoursePilot Evaluation: {run_id}",
@@ -184,18 +213,23 @@ def build_report(run_id: str, split: str, metrics: dict[str, Any], manifest: dic
         "",
         f"- Split: `{split}`",
         f"- Cases: {metrics['total_cases']}",
+        f"- Completion: {manifest.get('completed_cases', 0)}/{manifest.get('expected_cases', metrics['total_cases'])}",
+        f"- Valid comparison: {manifest.get('valid_comparison', False)}",
         f"- Task success: {_format_rate(metrics['task_success'])}",
         f"- Tool routing accuracy: {_format_rate(metrics['tool_routing_accuracy'])}",
         f"- Grounding correctness: {_format_rate(metrics['grounding_correctness'])}",
         f"- Citation precision: {_format_rate(metrics['citation_precision'])}",
         f"- Citation coverage: {_format_rate(metrics['citation_coverage'])}",
+        f"- Citation counts: {metrics['citation_correct_count']}/{metrics['citation_returned_count']} correct; "
+        f"{metrics['citation_covered_case_count']}/{metrics['citation_required_case_count']} required cases covered",
         f"- Authorization pass rate: {_format_rate(metrics['authorization_pass_rate'])}",
         f"- Authorization leaks: {metrics['authorization_leaks']}",
         f"- Error rate: {_format_rate(metrics['error_rate'])}",
-        f"- Median TTFT: {metrics['ttft_p50_seconds'] or 0:.3f}s",
-        f"- p95 TTFT: {metrics['ttft_p95_seconds'] or 0:.3f}s",
-        f"- Median end-to-end latency: {metrics['latency_p50_seconds'] or 0:.3f}s",
-        f"- p95 end-to-end latency: {metrics['latency_p95_seconds'] or 0:.3f}s",
+        f"- Median first verified text: {_format_seconds(metrics['ttft_p50_seconds'])}",
+        f"- First-verified-text samples: {metrics['ttft_sample_count']}",
+        f"- p95 first verified text: {_format_seconds(metrics['ttft_p95_seconds'])}",
+        f"- Median end-to-end latency: {_format_seconds(metrics['latency_p50_seconds'])}",
+        f"- p95 end-to-end latency: {_format_seconds(metrics['latency_p95_seconds'])}",
         "",
         "## Category Success",
         "",
@@ -227,73 +261,127 @@ def build_report(run_id: str, split: str, metrics: dict[str, Any], manifest: dic
 
 
 async def async_main(args: argparse.Namespace) -> Path:
-    templates = load_templates(args.templates)
-    cases = expand_templates(templates, args.split)
+    cases = (json.loads(args.cases.read_text(encoding="utf-8")) if args.cases else
+             expand_templates(load_templates(args.templates), args.split))
     if args.template_id:
+        if args.split != "development" or args.cases:
+            raise ValueError("Template filtering is development-only")
         cases = [case for case in cases if case["template_id"] == args.template_id]
-        if not cases:
-            raise ValueError(f"Unknown template_id: {args.template_id}")
+    if not cases or len({case["id"] for case in cases}) != len(cases):
+        raise ValueError("Cases must have unique IDs and must not be empty")
     dataset_hash = dataset_sha256(cases)
-    user_id = os.environ["EVAL_USER_ID"]
-    timeout = httpx.Timeout(args.timeout, connect=10)
-
-    async with httpx.AsyncClient(base_url=args.base_url, timeout=timeout) as client:
-        await wait_until_ready(client)
-        await warm_up(client, user_id, args.warmups)
-        results: list[dict[str, Any]] = []
-        for index, case in enumerate(cases, start=1):
-            result = await run_case(client, case, user_id)
-            results.append(result)
-            print(
-                f"[{index:03d}/{len(cases):03d}] {case['id']} "
-                f"{'PASS' if result['task_success'] else 'FAIL'}",
-                flush=True,
-            )
-
-    metrics = aggregate_results(results)
+    role = "visible_regression"
+    if args.review:
+        review = json.loads(args.review.read_text(encoding="utf-8"))
+        if not args.cases or review.get("dataset_sha256") != dataset_hash or not review.get("reviewer") or not review.get("approved"):
+            raise ValueError("A reviewed final set needs external cases and matching human approval")
+        role = "reviewed_final"
     run_id = args.run_id or datetime.now(UTC).strftime("%Y%m%dT%H%M%SZ")
+    if not re.fullmatch(r"[A-Za-z0-9_-]+", run_id):
+        raise ValueError("Unsafe run ID")
     artifact_dir = args.output_dir / run_id
-    artifact_dir.mkdir(parents=True, exist_ok=False)
-    manifest = {
-        "run_id": run_id,
-        "completed_at_utc": datetime.now(UTC).isoformat(),
-        "split": args.split,
-        "dataset_sha256": dataset_hash,
-        "dataset_source": str(args.templates),
-        "git_commit": os.getenv("EVAL_GIT_COMMIT", "working-tree"),
-        "model": {
-            "name": os.getenv("LLM_MODEL", "qwen3:8b"),
-            "requested_quantization": "Q4_K_M",
-            "ollama": await ollama_metadata(),
-        },
-        "temperature": float(os.getenv("LLM_TEMPERATURE", "0")),
-        "thinking_disabled": os.getenv("LLM_DISABLE_THINKING", "false").lower() == "true",
-        "concurrency": 1,
-        "warmups": args.warmups,
-        "hardware": {
-            "gpu": os.getenv("EVAL_GPU_NAME", "unknown"),
-            "gpu_memory_mb": os.getenv("EVAL_GPU_MEMORY_MB", "unknown"),
-            "driver": os.getenv("EVAL_GPU_DRIVER", "unknown"),
-            "runner_platform": platform.platform(),
-        },
-        "targets_not_results": TARGETS,
+    artifact_dir.mkdir(parents=True, exist_ok=args.resume)
+    root = ROOT
+    software_hash = snapshot_source(root, artifact_dir / ("source-resume.zip" if args.resume else "source.zip"))
+    fixture = await fixture_snapshot()
+    fixture_hash = hashlib.sha256(json.dumps(fixture, sort_keys=True, default=str).encode()).hexdigest()
+    model = await ollama_metadata()
+    fingerprint = {
+        "dataset": dataset_hash, "software": software_hash, "fixture": fixture_hash,
+        "model_digest": (model.get("installed_model") or {}).get("digest"),
+        "dependencies": dependency_versions(),
+        "settings": {name: os.getenv(name) for name in (
+            "LLM_MODEL", "LLM_TEMPERATURE", "LLM_MAX_TOKENS", "LLM_DISABLE_THINKING",
+            "LLM_TIMEOUT_SECONDS", "RUN_TIMEOUT_SECONDS", "RETRIEVAL_MODE", "EMBEDDING_MODEL")},
     }
-    result_payload = {"metrics": metrics, "cases": results}
-    (artifact_dir / "results.json").write_text(
-        json.dumps(result_payload, ensure_ascii=False, indent=2), encoding="utf-8"
-    )
-    (artifact_dir / "manifest.json").write_text(
-        json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8"
-    )
-    (artifact_dir / "report.md").write_text(
-        build_report(run_id, args.split, metrics, manifest), encoding="utf-8"
-    )
-    print(json.dumps(metrics, indent=2), flush=True)
+    manifest_path = artifact_dir / "manifest.json"
+    results = []
+    if args.resume:
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        if manifest["fingerprint"] != fingerprint:
+            raise ValueError("Resume rejected: source/model/settings/dependencies/fixture changed")
+        progress = artifact_dir / "results.json"
+        if progress.exists():
+            results = json.loads(progress.read_text(encoding="utf-8"))["cases"]
+        events = [json.loads(line) for line in (artifact_dir / "attempts.jsonl").read_text().splitlines()]
+        finished = {result["id"] for result in results}
+        interrupted = {event["case_id"] for event in events if event["event"] == "case_started"} - finished
+        for case in cases:
+            if case["id"] in interrupted:
+                results.append(score_case(case, {"error": {"type": "InterruptedAttempt"}}))
+    else:
+        manifest = {
+            "run_id": run_id, "started_at_utc": datetime.now(UTC).isoformat(), "split": args.split,
+            "dataset_role": role, "dataset_sha256": dataset_hash, "fingerprint": fingerprint,
+            "expected_cases": len(cases),
+            "git_commit": os.getenv("EVAL_GIT_COMMIT", "working-tree"),
+            "model": {"name": os.getenv("LLM_MODEL", "qwen3:8b"), "ollama": model},
+            "temperature": float(os.getenv("LLM_TEMPERATURE", "0")), "concurrency": 1,
+            "warmups": 0, "ttft_definition": "first validated nonempty answer segment; includes no-record/refusal text",
+            "hardware": {key: os.getenv(value, "unknown") for key, value in (
+                ("gpu", "EVAL_GPU_NAME"), ("driver", "EVAL_GPU_DRIVER"), ("memory_mb", "EVAL_GPU_MEMORY_MB"))},
+            "targets_not_results": TARGETS,
+        }
+        atomic_json(artifact_dir / "dataset.json", cases)
+        atomic_json(artifact_dir / "fixture.json", fixture)
+        atomic_json(manifest_path, manifest)
+    journal_path = artifact_dir / "attempts.jsonl"
+    journal(journal_path, "session_started", resume=args.resume, platform=platform.platform())
+    user_id = os.environ["EVAL_USER_ID"]
+    try:
+        async with httpx.AsyncClient(base_url=args.base_url, timeout=httpx.Timeout(args.timeout, connect=10)) as client:
+            await wait_until_ready(client)
+            for index in range(args.warmups):
+                journal(journal_path, "warmup_started", index=index)
+                warmup = await _read_sse(client, user_id=user_id, message="Reply with only: ready",
+                                        course_id=None, conversation_id=None)
+                manifest["warmups"] += 1
+                journal(journal_path, "warmup_finished", observation=warmup)
+                atomic_json(manifest_path, manifest)
+                if warmup.get("error") or not warmup.get("final"):
+                    raise RuntimeError("Warm-up failed; measurement not started")
+            warmed_model = await ollama_metadata()
+            running_model = next((item for item in warmed_model.get("running_models", [])
+                                  if item.get("name") == manifest["model"]["name"]), {})
+            runtime_context = {key: running_model.get(key) for key in ("digest", "context_length")}
+            if args.resume and manifest.get("runtime_context") != runtime_context:
+                raise ValueError("Resume rejected: actual loaded model/context changed")
+            manifest["runtime_context"] = runtime_context
+            manifest["model"]["after_warmup"] = warmed_model
+            atomic_json(manifest_path, manifest)
+            finished = {result["id"] for result in results}
+            for case in cases:
+                if case["id"] in finished:
+                    continue
+                await reset_case_plans()
+                journal(journal_path, "case_started", case_id=case["id"])
+                try:
+                    async with asyncio.timeout(args.timeout):
+                        result = await run_case(client, case, user_id)
+                except Exception as exc:
+                    result = score_case(case, {"error": {"type": type(exc).__name__}})
+                results.append(result)
+                journal(journal_path, "case_finished", case_id=case["id"], result=result)
+                atomic_json(artifact_dir / "results.json", {"metrics": aggregate_results(results), "cases": results})
+                print(f"[{len(results):03d}/{len(cases):03d}] {case['id']} {'PASS' if result['task_success'] else 'FAIL'}", flush=True)
+    finally:
+        metrics = aggregate_results(results)
+        manifest["completed_cases"] = len(results)
+        manifest["complete"] = len(results) == len(cases)
+        manifest["source_unchanged"] = snapshot_source(root, artifact_dir / "source-end.zip") == software_hash
+        manifest["valid_comparison"] = manifest["complete"] and manifest["source_unchanged"]
+        manifest["ended_at_utc"] = datetime.now(UTC).isoformat()
+        atomic_json(artifact_dir / "results.json", {"metrics": metrics, "cases": results})
+        atomic_json(manifest_path, manifest)
+        (artifact_dir / "report.md").write_text(build_report(run_id, role, metrics, manifest), encoding="utf-8")
     return artifact_dir
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Run the auditable CoursePilot evaluation")
+    parser.add_argument("--resume", action="store_true")
+    parser.add_argument("--cases", type=Path, help="External versioned case list")
+    parser.add_argument("--review", type=Path, help="Human review approval for an external frozen set")
     parser.add_argument("--base-url", default="http://localhost:8000")
     parser.add_argument(
         "--templates", type=Path, default=Path(__file__).with_name("templates.jsonl")

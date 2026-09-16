@@ -1,0 +1,3 @@
+{"at": "2026-09-16T00:35:32.886285+00:00", "event": "session_started", "resume": false, "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.41"}
+{"at": "2026-09-16T00:35:32.926667+00:00", "event": "warmup_started", "index": 0}
+{"at": "2026-09-16T00:35:47.463273+00:00", "event": "warmup_finished", "observation": {"http_status": 200, "observed_tools": [], "streamed_text": "", "final": {}, "error": {"code": "ValueError", "message": "Request failed; no plan was committed.", "run_id": "ffae0826-9a4a-44d8-ada5-91f969822bf0", "trace_id": "28e6dc01f77d44038948798aaddf85ea"}, "ttft_seconds": null, "time_to_final_seconds": null, "latency_seconds": 14.532920311001362}}

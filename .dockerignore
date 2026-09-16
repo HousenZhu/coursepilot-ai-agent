@@ -8,3 +8,5 @@ evals/results.json
 evals/artifacts
 .cache
 .env
+.git
+interview_master.md

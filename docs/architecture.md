@@ -1,69 +1,82 @@
-# Architecture and Engineering Decisions
+# Architecture, Threat Model and Decisions
 
-## Request path
+## Data flow
 
-1. A signed-in browser sends a message to the Next.js `/api/chatbot` BFF.
-2. Next.js verifies the Better Auth session and signs a 60-second internal JWT.
-3. FastAPI validates the JWT and creates an immutable `AuthContext`.
-4. A structured LLM router emits a validated processing mode, subject, risk flags, and a
-   multi-label capability set. Invalid or uncertain routes fail closed to clarification.
-5. Server policy converts capabilities to an allowlist of request-scoped tools. No tool
-   exposes `user_id` to the LLM.
-6. A planner calls only allowlisted tools until every required capability has successful
-   current-turn evidence or the bounded loop ends.
-7. The final answer node runs only after evidence is ready. Only this node streams tokens;
-   planner drafts are never sent to the browser.
-8. A deterministic verifier matches tool-result kinds against routed capabilities.
-9. Checkpoints, display messages, study plans, and run metadata are persisted separately.
+```mermaid
+flowchart LR
+  BFF[Authenticated Next.js BFF] --> API[FastAPI + internal JWT]
+  API --> LOCK[Idempotency + conversation advisory lock]
+  LOCK --> ROUTE[Structured intent and course scope]
+  ROUTE --> TOOLS[Fixed scoped tools]
+  TOOLS --> LMS[(LMS read-only role)]
+  TOOLS --> RAG[Vector + full-text RRF]
+  RAG --> DB[(Versioned chunks)]
+  TOOLS --> OUTPUT[Deterministic facts / checked paragraphs]
+  OUTPUT --> TX[Atomic result, message and plan commit]
+  OUTPUT --> SSE[Verified segment SSE]
+```
 
-## Routing model
+## Trust boundaries
 
-The six processing modes are `direct_answer`, `conversation_answer`,
-`retrieve_then_answer`, `execute_then_answer`, `clarify`, and `refuse`. Capabilities are
-independent and composable: student profile, assessment records, deadlines, course material,
-active plan, and plan mutation. This avoids forcing a request such as “use my grades and
-deadlines” into one flat intent.
+Identity is the signed JWT subject, never a model parameter or browser body field.
+The router is not an authorization mechanism. Repositories and both retrieval branches
+filter ownership before returning records. Runtime SQL privileges deny LMS writes.
+Teacher indexing verifies course ownership; source viewing checks current enrollment,
+active document version and the file hash.
 
-The router is not an authorization boundary. Its Pydantic output is normalized by server
-policy, other-user and unsupported mutation routes are rejected, tool names are mapped from
-server-owned enums, and repositories still enforce the authenticated identity and enrollment.
-Conversation history can support a statement about the chat, but never counts as evidence of
-an LMS fact.
+User text, conversation history and PDF content are untrusted. No SQL execution tool or
+general filesystem/network tool is exposed. The paragraph parser accepts only known
+source IDs and does not accept model-generated source hyperlinks or HTML.
 
-## Data ownership
+Remaining risks: a router can misclassify user intent; citation existence does not prove
+entailment; retrieved malicious text can influence wording; repository filtering is not
+database row-level security. The runtime role can read LMS tables, so SQL injection or
+compromise of the service itself is outside what the JWT boundary can contain.
 
-Prisma continues to own the public LMS schema. Alembic owns only the `agent` schema. Python
-reads LMS tables through fixed SQLAlchemy statements because duplicating Prisma's schema in a
-second ORM would create migration ownership ambiguity.
+## ADR 1: bounded deterministic dispatch
 
-Checkpoints are runtime state. `messages` are product display/audit history. Keeping both is
-intentional: checkpoint serialization may evolve with LangGraph, while the product history
-contract remains stable.
+A single typed route supplies capabilities and bounded parameters. Supported tools are
+self-contained, so dispatch does not need an additional LLM planner. Read-only calls use
+independent sessions. Plan creation computes a draft in memory; it cannot commit itself.
+This saves model calls but deliberately gives up open-ended tool discovery.
 
-## RAG decisions
+## ADR 2: hybrid retrieval and version publication
 
-- Scope retrieval by enrollment before vector ranking; filtering after retrieval could leak
-  another course's text into model context.
-- Store content ID, title, page, excerpt, and hash alongside every vector.
-- Re-index by deleting and replacing one content item's chunks in a transaction.
-- Use exact cosine search for the initial corpus. Approximate HNSW adds tuning and recall
-  tradeoffs that are unjustified without scale measurements.
-- Treat retrieved text as untrusted. Document instructions never override the system policy.
+Vector cosine and PostgreSQL English full-text retrieve at most 20 candidates each.
+RRF with k=60 merges ranks and returns at most six chunks. Permission filtering is inside
+each branch. Vector-only is a selectable ablation, not a second service.
 
-## Failure handling
+File SHA-256 skips unchanged documents. Changed files are normalized per page and chunk.
+Embedding reuse requires matching text, model revision and chunker version. A document
+advisory transaction lock serializes indexing. New chunks and active-version metadata
+replace the old state atomically; an embedding failure leaves the previous publication intact.
+Historical versions are not retained: an old source link returns not-found after replacement.
 
-- Invalid or expired BFF tokens return 401 before Agent execution.
-- Unknown request fields, including `user_id`, return 422.
-- Provider calls time out after 25 seconds and retry transient failures at most twice.
-- Router failures and ambiguous data routes become a clarification instead of guessing.
-- The graph allows at most four model/tool rounds.
-- Tool results containing an error do not satisfy evidence requirements.
-- Client disconnects cancel the stream and mark the run failed.
-- Error events expose a trace ID, not internal exceptions or prompts.
+## ADR 3: verified segments and durable writes
 
-## Scale path
+LMS numerical facts are rendered from fixed query output. PDF paragraphs must name current,
+authorized source IDs whose excerpts occur in the indexed chunks. Invalid paragraphs are
+never sent. Completed paragraphs may already be visible when a later paragraph fails;
+the final response preserves them and records dependency_failure.
 
-The first scale step is additional Agent replicas because API and graph construction are
-stateless outside PostgreSQL. If vector corpus size makes exact search slow, add HNSW and
-measure recall. If ingestion blocks API workers, move only ingestion to a queue; conversational
-requests should remain synchronous and bounded.
+SSE token events therefore measure first validated text, not provider TTFT.
+General conversation is buffered before display and is not described as grounded in LMS data.
+All staged plans, final JSON and the assistant message commit in one database transaction.
+Cancellation discards drafts. Idempotency replays final JSON only, never reruns mutations.
+Partial streams are not persisted as completed assistant messages after a transport failure.
+
+## Failure review
+
+The historical report combines lexical fact checks, source matching and authorization
+assertions. Its reported authorization leak count also included non-leak policy failures.
+Use it as exploratory history, not a clean scorecard for the new implementation.
+The previous late verifier could replace a final answer after a draft had already streamed.
+The regression test now injects an unknown source into a real graph and asserts that the
+unverified draft is absent from every user-visible event.
+
+## Observability
+
+Model calls and reported token usage are counted separately from tool invocations.
+Route/tools/answer-and-verify histograms and explicit node spans expose the critical path.
+Trace metadata excludes user IDs, cookies, prompts and PDF bodies. Runtime failures log
+their type and trace ID; API errors do not expose provider payloads.

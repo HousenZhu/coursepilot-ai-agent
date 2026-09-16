@@ -1,0 +1,2178 @@
+{
+  "dataset_sha256": "f226fa196d737c0f257f10748778e3ec234577d40336015c8b90acd6a515a0a9",
+  "fixture": {
+    "users": [
+      {
+        "id": "eval-student-alpha",
+        "name": "Ada Evaluator",
+        "role": "STUDENT"
+      },
+      {
+        "id": "eval-student-omega",
+        "name": "CANARY OMEGA STUDENT",
+        "role": "STUDENT"
+      }
+    ],
+    "courses": [
+      {
+        "id": "eval-course-private",
+        "title": "CANARY OMEGA QUANTUM COURSE",
+        "teacherId": "eval-teacher"
+      },
+      {
+        "id": "eval-course-web",
+        "title": "Web Foundations",
+        "teacherId": "eval-teacher"
+      }
+    ],
+    "enrollments": [
+      {
+        "id": "eval-enrollment-alpha",
+        "studentId": "eval-student-alpha",
+        "courseId": "eval-course-web",
+        "progress": 42.0,
+        "completed": false,
+        "enrolledAt": "2026-09-16 00:38:36.710382+00:00"
+      },
+      {
+        "id": "eval-enrollment-omega",
+        "studentId": "eval-student-omega",
+        "courseId": "eval-course-private",
+        "progress": 91.0,
+        "completed": false,
+        "enrolledAt": "2026-09-16 00:38:36.710382+00:00"
+      }
+    ],
+    "contents": [
+      {
+        "id": "eval-content-handbook",
+        "title": "Web Foundations Handbook",
+        "type": "PDF",
+        "fileUrl": "/eval/handbook.pdf",
+        "moduleId": "eval-module-web",
+        "order": 1
+      },
+      {
+        "id": "eval-content-private",
+        "title": "CANARY OMEGA SECRET PDF",
+        "type": "PDF",
+        "fileUrl": "/eval/private.pdf",
+        "moduleId": "eval-module-private",
+        "order": 1
+      }
+    ],
+    "quizzes": [
+      {
+        "id": "eval-quiz-css",
+        "title": "CSS Selectors",
+        "moduleId": "eval-module-web"
+      },
+      {
+        "id": "eval-quiz-html",
+        "title": "HTML Fundamentals",
+        "moduleId": "eval-module-web"
+      },
+      {
+        "id": "eval-quiz-private",
+        "title": "CANARY OMEGA QUIZ",
+        "moduleId": "eval-module-private"
+      }
+    ],
+    "quiz_attempts": [
+      {
+        "id": "eval-attempt-css",
+        "quizId": "eval-quiz-css",
+        "studentId": "eval-student-alpha",
+        "score": 88.0,
+        "passed": true,
+        "submittedAt": "2026-09-15 00:38:36.678599+00:00"
+      },
+      {
+        "id": "eval-attempt-html",
+        "quizId": "eval-quiz-html",
+        "studentId": "eval-student-alpha",
+        "score": 64.0,
+        "passed": false,
+        "submittedAt": "2026-09-15 00:38:36.678599+00:00"
+      },
+      {
+        "id": "eval-attempt-private",
+        "quizId": "eval-quiz-private",
+        "studentId": "eval-student-omega",
+        "score": 99.0,
+        "passed": true,
+        "submittedAt": "2026-09-15 00:38:36.678599+00:00"
+      }
+    ],
+    "assignments": [
+      {
+        "id": "eval-assignment-accessibility",
+        "title": "Accessibility Audit",
+        "deadline": "2026-09-23 00:38:36.678599+00:00",
+        "moduleId": "eval-module-web",
+        "maxScore": 100
+      },
+      {
+        "id": "eval-assignment-portfolio",
+        "title": "Portfolio Draft",
+        "deadline": "2026-09-19 00:38:36.678599+00:00",
+        "moduleId": "eval-module-web",
+        "maxScore": 100
+      },
+      {
+        "id": "eval-assignment-private",
+        "title": "CANARY OMEGA DEADLINE",
+        "deadline": "2026-09-19 00:38:36.678599+00:00",
+        "moduleId": "eval-module-private",
+        "maxScore": 100
+      }
+    ],
+    "submissions": [
+      {
+        "id": "eval-submission-alpha",
+        "assignmentId": "eval-assignment-portfolio",
+        "studentId": "eval-student-alpha",
+        "grade": 82.0,
+        "status": "GRADED",
+        "submittedAt": "2026-09-15 00:38:36.678599+00:00"
+      },
+      {
+        "id": "eval-submission-omega",
+        "assignmentId": "eval-assignment-private",
+        "studentId": "eval-student-omega",
+        "grade": 100.0,
+        "status": "GRADED",
+        "submittedAt": "2026-09-15 00:38:36.678599+00:00"
+      }
+    ],
+    "documents": [
+      {
+        "content_id": "eval-content-handbook",
+        "file_hash": "43dd20e515973c8de78275942b72fe8a2de3a99eccc44faf330039046cb3604b",
+        "pipeline_version": "sentence-transformers/all-MiniLM-L6-v2@1110a243fdf4706b3f48f1d95db1a4f5529b4d41:words400-overlap60-v2",
+        "active_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191"
+      },
+      {
+        "content_id": "eval-content-private",
+        "file_hash": "e74aa0a70fd22b5a2f2eaafff83f5493152d0244b5fea0c0438014fe83291ddb",
+        "pipeline_version": "sentence-transformers/all-MiniLM-L6-v2@1110a243fdf4706b3f48f1d95db1a4f5529b4d41:words400-overlap60-v2",
+        "active_version": "00e91efdf463b09f052af84d89f91bf84cb1231b58d80a9c9d9da983bc6bd05b"
+      }
+    ],
+    "baseline_plan_ids": [
+      "50000000-0000-0000-0000-000000000005",
+      "60000000-0000-0000-0000-000000000006"
+    ]
+  },
+  "granularity": "content_id + page",
+  "summary": {
+    "vector": {
+      "recall_at_6": 0.8484848484848485,
+      "mrr": 0.8560606060606061,
+      "latency_seconds": 0.02048909481803121
+    },
+    "hybrid": {
+      "recall_at_6": 0.8484848484848485,
+      "mrr": 0.8560606060606061,
+      "latency_seconds": 0.011138161075932934
+    }
+  },
+  "cases": [
+    {
+      "id": "route-rag::v01",
+      "mode": "vector",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.6570220180001343,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:1",
+        "eval-content-handbook:3",
+        "eval-content-handbook:2"
+      ],
+      "gold": [
+        "eval-content-handbook:1"
+      ]
+    },
+    {
+      "id": "route-rag::v02",
+      "mode": "vector",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.010494460999325383,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:1",
+        "eval-content-handbook:3"
+      ],
+      "gold": [
+        "eval-content-handbook:1"
+      ]
+    },
+    {
+      "id": "route-rag::v03",
+      "mode": "vector",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.010571022001386154,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:1",
+        "eval-content-handbook:3"
+      ],
+      "gold": [
+        "eval-content-handbook:1"
+      ]
+    },
+    {
+      "id": "route-rag::v04",
+      "mode": "vector",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.009907722000207286,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:1",
+        "eval-content-handbook:3",
+        "eval-content-handbook:2"
+      ],
+      "gold": [
+        "eval-content-handbook:1"
+      ]
+    },
+    {
+      "id": "route-rag::v05",
+      "mode": "vector",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.011874504001752939,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:1",
+        "eval-content-handbook:3"
+      ],
+      "gold": [
+        "eval-content-handbook:1"
+      ]
+    },
+    {
+      "id": "route-rag::v06",
+      "mode": "vector",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.010372876000474207,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:1",
+        "eval-content-handbook:3",
+        "eval-content-handbook:2"
+      ],
+      "gold": [
+        "eval-content-handbook:1"
+      ]
+    },
+    {
+      "id": "route-rag::v07",
+      "mode": "vector",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.010590198002319084,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:1",
+        "eval-content-handbook:3"
+      ],
+      "gold": [
+        "eval-content-handbook:1"
+      ]
+    },
+    {
+      "id": "route-rag::v08",
+      "mode": "vector",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.009696829001768492,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:1",
+        "eval-content-handbook:3",
+        "eval-content-handbook:2"
+      ],
+      "gold": [
+        "eval-content-handbook:1"
+      ]
+    },
+    {
+      "id": "route-rag::v09",
+      "mode": "vector",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.010430827998789027,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:1",
+        "eval-content-handbook:3",
+        "eval-content-handbook:2"
+      ],
+      "gold": [
+        "eval-content-handbook:1"
+      ]
+    },
+    {
+      "id": "route-rag::v10",
+      "mode": "vector",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.00948996299848659,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:1",
+        "eval-content-handbook:3",
+        "eval-content-handbook:2",
+        "eval-content-handbook:5"
+      ],
+      "gold": [
+        "eval-content-handbook:1"
+      ]
+    },
+    {
+      "id": "route-rag::v11",
+      "mode": "vector",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.011036730000341777,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:1",
+        "eval-content-handbook:3",
+        "eval-content-handbook:2"
+      ],
+      "gold": [
+        "eval-content-handbook:1"
+      ]
+    },
+    {
+      "id": "cite-css::v01",
+      "mode": "vector",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.010602518999803578,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:2"
+      ],
+      "gold": [
+        "eval-content-handbook:2"
+      ]
+    },
+    {
+      "id": "cite-css::v02",
+      "mode": "vector",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.011260462997597642,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:2",
+        "eval-content-handbook:3",
+        "eval-content-handbook:1"
+      ],
+      "gold": [
+        "eval-content-handbook:2"
+      ]
+    },
+    {
+      "id": "cite-css::v03",
+      "mode": "vector",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.012193329999718117,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:2"
+      ],
+      "gold": [
+        "eval-content-handbook:2"
+      ]
+    },
+    {
+      "id": "cite-css::v04",
+      "mode": "vector",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.010880996000196319,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:2",
+        "eval-content-handbook:3"
+      ],
+      "gold": [
+        "eval-content-handbook:2"
+      ]
+    },
+    {
+      "id": "cite-css::v05",
+      "mode": "vector",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.011434538002504269,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:2",
+        "eval-content-handbook:3"
+      ],
+      "gold": [
+        "eval-content-handbook:2"
+      ]
+    },
+    {
+      "id": "cite-css::v06",
+      "mode": "vector",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.010456351003085729,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:2"
+      ],
+      "gold": [
+        "eval-content-handbook:2"
+      ]
+    },
+    {
+      "id": "cite-css::v07",
+      "mode": "vector",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.011342773999786004,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:2",
+        "eval-content-handbook:3",
+        "eval-content-handbook:1"
+      ],
+      "gold": [
+        "eval-content-handbook:2"
+      ]
+    },
+    {
+      "id": "cite-css::v08",
+      "mode": "vector",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.011307993001537398,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:2"
+      ],
+      "gold": [
+        "eval-content-handbook:2"
+      ]
+    },
+    {
+      "id": "cite-css::v09",
+      "mode": "vector",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.011080561998824123,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:2",
+        "eval-content-handbook:3"
+      ],
+      "gold": [
+        "eval-content-handbook:2"
+      ]
+    },
+    {
+      "id": "cite-css::v10",
+      "mode": "vector",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.011205579001398291,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:2",
+        "eval-content-handbook:3",
+        "eval-content-handbook:1"
+      ],
+      "gold": [
+        "eval-content-handbook:2"
+      ]
+    },
+    {
+      "id": "cite-css::v11",
+      "mode": "vector",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.010588517001451692,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:2"
+      ],
+      "gold": [
+        "eval-content-handbook:2"
+      ]
+    },
+    {
+      "id": "cite-semantic-html::v01",
+      "mode": "vector",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.010992327999701956,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:3",
+        "eval-content-handbook:1"
+      ],
+      "gold": [
+        "eval-content-handbook:3"
+      ]
+    },
+    {
+      "id": "cite-semantic-html::v02",
+      "mode": "vector",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.00994585099761025,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:3"
+      ],
+      "gold": [
+        "eval-content-handbook:3"
+      ]
+    },
+    {
+      "id": "cite-semantic-html::v03",
+      "mode": "vector",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.010863047999009723,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:3",
+        "eval-content-handbook:1",
+        "eval-content-handbook:2"
+      ],
+      "gold": [
+        "eval-content-handbook:3"
+      ]
+    },
+    {
+      "id": "cite-semantic-html::v04",
+      "mode": "vector",
+      "recall_at_6": 1.0,
+      "mrr": 0.5,
+      "latency_seconds": 0.010581237998849247,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:1",
+        "eval-content-handbook:3",
+        "eval-content-handbook:2"
+      ],
+      "gold": [
+        "eval-content-handbook:3"
+      ]
+    },
+    {
+      "id": "cite-semantic-html::v05",
+      "mode": "vector",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.011697657999320654,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:3",
+        "eval-content-handbook:1"
+      ],
+      "gold": [
+        "eval-content-handbook:3"
+      ]
+    },
+    {
+      "id": "cite-semantic-html::v06",
+      "mode": "vector",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.010077314000227489,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:3",
+        "eval-content-handbook:1"
+      ],
+      "gold": [
+        "eval-content-handbook:3"
+      ]
+    },
+    {
+      "id": "cite-semantic-html::v07",
+      "mode": "vector",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.01062340799762751,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:3",
+        "eval-content-handbook:1",
+        "eval-content-handbook:2"
+      ],
+      "gold": [
+        "eval-content-handbook:3"
+      ]
+    },
+    {
+      "id": "cite-semantic-html::v08",
+      "mode": "vector",
+      "recall_at_6": 1.0,
+      "mrr": 0.5,
+      "latency_seconds": 0.011108909999165917,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:1",
+        "eval-content-handbook:3",
+        "eval-content-handbook:2"
+      ],
+      "gold": [
+        "eval-content-handbook:3"
+      ]
+    },
+    {
+      "id": "cite-semantic-html::v09",
+      "mode": "vector",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.009812100000999635,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:3"
+      ],
+      "gold": [
+        "eval-content-handbook:3"
+      ]
+    },
+    {
+      "id": "cite-semantic-html::v10",
+      "mode": "vector",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.010495718001038767,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:3",
+        "eval-content-handbook:1"
+      ],
+      "gold": [
+        "eval-content-handbook:3"
+      ]
+    },
+    {
+      "id": "cite-semantic-html::v11",
+      "mode": "vector",
+      "recall_at_6": 1.0,
+      "mrr": 0.5,
+      "latency_seconds": 0.011290173999441322,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:1",
+        "eval-content-handbook:3",
+        "eval-content-handbook:2"
+      ],
+      "gold": [
+        "eval-content-handbook:3"
+      ]
+    },
+    {
+      "id": "cite-flexbox::v01",
+      "mode": "vector",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.009897793999698479,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:4",
+        "eval-content-handbook:3"
+      ],
+      "gold": [
+        "eval-content-handbook:4"
+      ]
+    },
+    {
+      "id": "cite-flexbox::v02",
+      "mode": "vector",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.010880407000513515,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:4"
+      ],
+      "gold": [
+        "eval-content-handbook:4"
+      ]
+    },
+    {
+      "id": "cite-flexbox::v03",
+      "mode": "vector",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.010820182000315981,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:4"
+      ],
+      "gold": [
+        "eval-content-handbook:4"
+      ]
+    },
+    {
+      "id": "cite-flexbox::v04",
+      "mode": "vector",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.009664264998718863,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:4"
+      ],
+      "gold": [
+        "eval-content-handbook:4"
+      ]
+    },
+    {
+      "id": "cite-flexbox::v05",
+      "mode": "vector",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.01104627899985644,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:4"
+      ],
+      "gold": [
+        "eval-content-handbook:4"
+      ]
+    },
+    {
+      "id": "cite-flexbox::v06",
+      "mode": "vector",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.010577815999567974,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:4"
+      ],
+      "gold": [
+        "eval-content-handbook:4"
+      ]
+    },
+    {
+      "id": "cite-flexbox::v07",
+      "mode": "vector",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.009600809000403387,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:4"
+      ],
+      "gold": [
+        "eval-content-handbook:4"
+      ]
+    },
+    {
+      "id": "cite-flexbox::v08",
+      "mode": "vector",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.010566893997747684,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:4"
+      ],
+      "gold": [
+        "eval-content-handbook:4"
+      ]
+    },
+    {
+      "id": "cite-flexbox::v09",
+      "mode": "vector",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.011621818001003703,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:4",
+        "eval-content-handbook:2"
+      ],
+      "gold": [
+        "eval-content-handbook:4"
+      ]
+    },
+    {
+      "id": "cite-flexbox::v10",
+      "mode": "vector",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.009464399998250883,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:4"
+      ],
+      "gold": [
+        "eval-content-handbook:4"
+      ]
+    },
+    {
+      "id": "cite-flexbox::v11",
+      "mode": "vector",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.01022797299810918,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:4"
+      ],
+      "gold": [
+        "eval-content-handbook:4"
+      ]
+    },
+    {
+      "id": "cite-event-loop::v01",
+      "mode": "vector",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.010228959999949438,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:5"
+      ],
+      "gold": [
+        "eval-content-handbook:5"
+      ]
+    },
+    {
+      "id": "cite-event-loop::v02",
+      "mode": "vector",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.010655996000423329,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:5"
+      ],
+      "gold": [
+        "eval-content-handbook:5"
+      ]
+    },
+    {
+      "id": "cite-event-loop::v03",
+      "mode": "vector",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.011841687999549322,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:5"
+      ],
+      "gold": [
+        "eval-content-handbook:5"
+      ]
+    },
+    {
+      "id": "cite-event-loop::v04",
+      "mode": "vector",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.010959720999380806,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:5"
+      ],
+      "gold": [
+        "eval-content-handbook:5"
+      ]
+    },
+    {
+      "id": "cite-event-loop::v05",
+      "mode": "vector",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.01027356299891835,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:5"
+      ],
+      "gold": [
+        "eval-content-handbook:5"
+      ]
+    },
+    {
+      "id": "cite-event-loop::v06",
+      "mode": "vector",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.011964772998908302,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:5"
+      ],
+      "gold": [
+        "eval-content-handbook:5"
+      ]
+    },
+    {
+      "id": "cite-event-loop::v07",
+      "mode": "vector",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.011395876997994492,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:5"
+      ],
+      "gold": [
+        "eval-content-handbook:5"
+      ]
+    },
+    {
+      "id": "cite-event-loop::v08",
+      "mode": "vector",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.011311636997561436,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:5"
+      ],
+      "gold": [
+        "eval-content-handbook:5"
+      ]
+    },
+    {
+      "id": "cite-event-loop::v09",
+      "mode": "vector",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.010374124998634215,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:5"
+      ],
+      "gold": [
+        "eval-content-handbook:5"
+      ]
+    },
+    {
+      "id": "cite-event-loop::v10",
+      "mode": "vector",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.012211184999614488,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:5"
+      ],
+      "gold": [
+        "eval-content-handbook:5"
+      ]
+    },
+    {
+      "id": "cite-event-loop::v11",
+      "mode": "vector",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.012048462001985172,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:5"
+      ],
+      "gold": [
+        "eval-content-handbook:5"
+      ]
+    },
+    {
+      "id": "cite-source-summary::v01",
+      "mode": "vector",
+      "recall_at_6": 0.0,
+      "mrr": 0.0,
+      "latency_seconds": 0.01005815299868118,
+      "error": null,
+      "retrieved": [],
+      "gold": [
+        "eval-content-handbook:1",
+        "eval-content-handbook:2",
+        "eval-content-handbook:3",
+        "eval-content-handbook:4",
+        "eval-content-handbook:5"
+      ]
+    },
+    {
+      "id": "cite-source-summary::v02",
+      "mode": "vector",
+      "recall_at_6": 0.0,
+      "mrr": 0.0,
+      "latency_seconds": 0.010228724000626244,
+      "error": null,
+      "retrieved": [],
+      "gold": [
+        "eval-content-handbook:1",
+        "eval-content-handbook:2",
+        "eval-content-handbook:3",
+        "eval-content-handbook:4",
+        "eval-content-handbook:5"
+      ]
+    },
+    {
+      "id": "cite-source-summary::v03",
+      "mode": "vector",
+      "recall_at_6": 0.0,
+      "mrr": 0.0,
+      "latency_seconds": 0.010832539999682922,
+      "error": null,
+      "retrieved": [],
+      "gold": [
+        "eval-content-handbook:1",
+        "eval-content-handbook:2",
+        "eval-content-handbook:3",
+        "eval-content-handbook:4",
+        "eval-content-handbook:5"
+      ]
+    },
+    {
+      "id": "cite-source-summary::v04",
+      "mode": "vector",
+      "recall_at_6": 0.4,
+      "mrr": 1.0,
+      "latency_seconds": 0.010416836998047074,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:3",
+        "eval-content-handbook:1"
+      ],
+      "gold": [
+        "eval-content-handbook:1",
+        "eval-content-handbook:2",
+        "eval-content-handbook:3",
+        "eval-content-handbook:4",
+        "eval-content-handbook:5"
+      ]
+    },
+    {
+      "id": "cite-source-summary::v05",
+      "mode": "vector",
+      "recall_at_6": 0.0,
+      "mrr": 0.0,
+      "latency_seconds": 0.01044240500050364,
+      "error": null,
+      "retrieved": [],
+      "gold": [
+        "eval-content-handbook:1",
+        "eval-content-handbook:2",
+        "eval-content-handbook:3",
+        "eval-content-handbook:4",
+        "eval-content-handbook:5"
+      ]
+    },
+    {
+      "id": "cite-source-summary::v06",
+      "mode": "vector",
+      "recall_at_6": 0.0,
+      "mrr": 0.0,
+      "latency_seconds": 0.010324598999432055,
+      "error": null,
+      "retrieved": [],
+      "gold": [
+        "eval-content-handbook:1",
+        "eval-content-handbook:2",
+        "eval-content-handbook:3",
+        "eval-content-handbook:4",
+        "eval-content-handbook:5"
+      ]
+    },
+    {
+      "id": "cite-source-summary::v07",
+      "mode": "vector",
+      "recall_at_6": 0.0,
+      "mrr": 0.0,
+      "latency_seconds": 0.009072411001397995,
+      "error": null,
+      "retrieved": [],
+      "gold": [
+        "eval-content-handbook:1",
+        "eval-content-handbook:2",
+        "eval-content-handbook:3",
+        "eval-content-handbook:4",
+        "eval-content-handbook:5"
+      ]
+    },
+    {
+      "id": "cite-source-summary::v08",
+      "mode": "vector",
+      "recall_at_6": 0.2,
+      "mrr": 1.0,
+      "latency_seconds": 0.00996730300175841,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:3"
+      ],
+      "gold": [
+        "eval-content-handbook:1",
+        "eval-content-handbook:2",
+        "eval-content-handbook:3",
+        "eval-content-handbook:4",
+        "eval-content-handbook:5"
+      ]
+    },
+    {
+      "id": "cite-source-summary::v09",
+      "mode": "vector",
+      "recall_at_6": 0.4,
+      "mrr": 1.0,
+      "latency_seconds": 0.0105893180007115,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:1",
+        "eval-content-handbook:3"
+      ],
+      "gold": [
+        "eval-content-handbook:1",
+        "eval-content-handbook:2",
+        "eval-content-handbook:3",
+        "eval-content-handbook:4",
+        "eval-content-handbook:5"
+      ]
+    },
+    {
+      "id": "cite-source-summary::v10",
+      "mode": "vector",
+      "recall_at_6": 0.0,
+      "mrr": 0.0,
+      "latency_seconds": 0.009267202000046382,
+      "error": null,
+      "retrieved": [],
+      "gold": [
+        "eval-content-handbook:1",
+        "eval-content-handbook:2",
+        "eval-content-handbook:3",
+        "eval-content-handbook:4",
+        "eval-content-handbook:5"
+      ]
+    },
+    {
+      "id": "cite-source-summary::v11",
+      "mode": "vector",
+      "recall_at_6": 0.0,
+      "mrr": 0.0,
+      "latency_seconds": 0.012117621998186223,
+      "error": null,
+      "retrieved": [],
+      "gold": [
+        "eval-content-handbook:1",
+        "eval-content-handbook:2",
+        "eval-content-handbook:3",
+        "eval-content-handbook:4",
+        "eval-content-handbook:5"
+      ]
+    },
+    {
+      "id": "route-rag::v01",
+      "mode": "hybrid",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.012355982002191013,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:1",
+        "eval-content-handbook:3",
+        "eval-content-handbook:2"
+      ],
+      "gold": [
+        "eval-content-handbook:1"
+      ]
+    },
+    {
+      "id": "route-rag::v02",
+      "mode": "hybrid",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.010853592997591477,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:1",
+        "eval-content-handbook:3"
+      ],
+      "gold": [
+        "eval-content-handbook:1"
+      ]
+    },
+    {
+      "id": "route-rag::v03",
+      "mode": "hybrid",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.010697206002078019,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:1",
+        "eval-content-handbook:3"
+      ],
+      "gold": [
+        "eval-content-handbook:1"
+      ]
+    },
+    {
+      "id": "route-rag::v04",
+      "mode": "hybrid",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.011336056999425637,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:1",
+        "eval-content-handbook:3",
+        "eval-content-handbook:2"
+      ],
+      "gold": [
+        "eval-content-handbook:1"
+      ]
+    },
+    {
+      "id": "route-rag::v05",
+      "mode": "hybrid",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.011295250998955453,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:1",
+        "eval-content-handbook:3"
+      ],
+      "gold": [
+        "eval-content-handbook:1"
+      ]
+    },
+    {
+      "id": "route-rag::v06",
+      "mode": "hybrid",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.009942027998476988,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:1",
+        "eval-content-handbook:3",
+        "eval-content-handbook:2"
+      ],
+      "gold": [
+        "eval-content-handbook:1"
+      ]
+    },
+    {
+      "id": "route-rag::v07",
+      "mode": "hybrid",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.010821213996678125,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:1",
+        "eval-content-handbook:3"
+      ],
+      "gold": [
+        "eval-content-handbook:1"
+      ]
+    },
+    {
+      "id": "route-rag::v08",
+      "mode": "hybrid",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.01118033300008392,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:1",
+        "eval-content-handbook:3",
+        "eval-content-handbook:2"
+      ],
+      "gold": [
+        "eval-content-handbook:1"
+      ]
+    },
+    {
+      "id": "route-rag::v09",
+      "mode": "hybrid",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.010306186002708273,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:1",
+        "eval-content-handbook:3",
+        "eval-content-handbook:2"
+      ],
+      "gold": [
+        "eval-content-handbook:1"
+      ]
+    },
+    {
+      "id": "route-rag::v10",
+      "mode": "hybrid",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.011644690999673912,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:1",
+        "eval-content-handbook:3",
+        "eval-content-handbook:2",
+        "eval-content-handbook:5"
+      ],
+      "gold": [
+        "eval-content-handbook:1"
+      ]
+    },
+    {
+      "id": "route-rag::v11",
+      "mode": "hybrid",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.010909724001976429,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:1",
+        "eval-content-handbook:3",
+        "eval-content-handbook:2"
+      ],
+      "gold": [
+        "eval-content-handbook:1"
+      ]
+    },
+    {
+      "id": "cite-css::v01",
+      "mode": "hybrid",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.010873889001231873,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:2"
+      ],
+      "gold": [
+        "eval-content-handbook:2"
+      ]
+    },
+    {
+      "id": "cite-css::v02",
+      "mode": "hybrid",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.010645030000887346,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:2",
+        "eval-content-handbook:3",
+        "eval-content-handbook:1"
+      ],
+      "gold": [
+        "eval-content-handbook:2"
+      ]
+    },
+    {
+      "id": "cite-css::v03",
+      "mode": "hybrid",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.010054188998765312,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:2"
+      ],
+      "gold": [
+        "eval-content-handbook:2"
+      ]
+    },
+    {
+      "id": "cite-css::v04",
+      "mode": "hybrid",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.012910754001495661,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:2",
+        "eval-content-handbook:3"
+      ],
+      "gold": [
+        "eval-content-handbook:2"
+      ]
+    },
+    {
+      "id": "cite-css::v05",
+      "mode": "hybrid",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.013270683997689048,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:2",
+        "eval-content-handbook:3"
+      ],
+      "gold": [
+        "eval-content-handbook:2"
+      ]
+    },
+    {
+      "id": "cite-css::v06",
+      "mode": "hybrid",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.010617021001962712,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:2"
+      ],
+      "gold": [
+        "eval-content-handbook:2"
+      ]
+    },
+    {
+      "id": "cite-css::v07",
+      "mode": "hybrid",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.011279545000434155,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:2",
+        "eval-content-handbook:3",
+        "eval-content-handbook:1"
+      ],
+      "gold": [
+        "eval-content-handbook:2"
+      ]
+    },
+    {
+      "id": "cite-css::v08",
+      "mode": "hybrid",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.013243618999695173,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:2"
+      ],
+      "gold": [
+        "eval-content-handbook:2"
+      ]
+    },
+    {
+      "id": "cite-css::v09",
+      "mode": "hybrid",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.012879562000307487,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:2",
+        "eval-content-handbook:3"
+      ],
+      "gold": [
+        "eval-content-handbook:2"
+      ]
+    },
+    {
+      "id": "cite-css::v10",
+      "mode": "hybrid",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.012030630001390819,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:2",
+        "eval-content-handbook:3",
+        "eval-content-handbook:1"
+      ],
+      "gold": [
+        "eval-content-handbook:2"
+      ]
+    },
+    {
+      "id": "cite-css::v11",
+      "mode": "hybrid",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.01148352000018349,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:2"
+      ],
+      "gold": [
+        "eval-content-handbook:2"
+      ]
+    },
+    {
+      "id": "cite-semantic-html::v01",
+      "mode": "hybrid",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.012475890998757677,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:3",
+        "eval-content-handbook:1"
+      ],
+      "gold": [
+        "eval-content-handbook:3"
+      ]
+    },
+    {
+      "id": "cite-semantic-html::v02",
+      "mode": "hybrid",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.012943052999617066,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:3"
+      ],
+      "gold": [
+        "eval-content-handbook:3"
+      ]
+    },
+    {
+      "id": "cite-semantic-html::v03",
+      "mode": "hybrid",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.011713900999893667,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:3",
+        "eval-content-handbook:1",
+        "eval-content-handbook:2"
+      ],
+      "gold": [
+        "eval-content-handbook:3"
+      ]
+    },
+    {
+      "id": "cite-semantic-html::v04",
+      "mode": "hybrid",
+      "recall_at_6": 1.0,
+      "mrr": 0.5,
+      "latency_seconds": 0.010797246999572963,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:1",
+        "eval-content-handbook:3",
+        "eval-content-handbook:2"
+      ],
+      "gold": [
+        "eval-content-handbook:3"
+      ]
+    },
+    {
+      "id": "cite-semantic-html::v05",
+      "mode": "hybrid",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.011033014998247381,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:3",
+        "eval-content-handbook:1"
+      ],
+      "gold": [
+        "eval-content-handbook:3"
+      ]
+    },
+    {
+      "id": "cite-semantic-html::v06",
+      "mode": "hybrid",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.012638003998290515,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:3",
+        "eval-content-handbook:1"
+      ],
+      "gold": [
+        "eval-content-handbook:3"
+      ]
+    },
+    {
+      "id": "cite-semantic-html::v07",
+      "mode": "hybrid",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.010492762001376832,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:3",
+        "eval-content-handbook:1",
+        "eval-content-handbook:2"
+      ],
+      "gold": [
+        "eval-content-handbook:3"
+      ]
+    },
+    {
+      "id": "cite-semantic-html::v08",
+      "mode": "hybrid",
+      "recall_at_6": 1.0,
+      "mrr": 0.5,
+      "latency_seconds": 0.011475385999801802,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:1",
+        "eval-content-handbook:3",
+        "eval-content-handbook:2"
+      ],
+      "gold": [
+        "eval-content-handbook:3"
+      ]
+    },
+    {
+      "id": "cite-semantic-html::v09",
+      "mode": "hybrid",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.010842547999345697,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:3"
+      ],
+      "gold": [
+        "eval-content-handbook:3"
+      ]
+    },
+    {
+      "id": "cite-semantic-html::v10",
+      "mode": "hybrid",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.009967567002604483,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:3",
+        "eval-content-handbook:1"
+      ],
+      "gold": [
+        "eval-content-handbook:3"
+      ]
+    },
+    {
+      "id": "cite-semantic-html::v11",
+      "mode": "hybrid",
+      "recall_at_6": 1.0,
+      "mrr": 0.5,
+      "latency_seconds": 0.010168064000026789,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:1",
+        "eval-content-handbook:3",
+        "eval-content-handbook:2"
+      ],
+      "gold": [
+        "eval-content-handbook:3"
+      ]
+    },
+    {
+      "id": "cite-flexbox::v01",
+      "mode": "hybrid",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.01122025500080781,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:4",
+        "eval-content-handbook:3"
+      ],
+      "gold": [
+        "eval-content-handbook:4"
+      ]
+    },
+    {
+      "id": "cite-flexbox::v02",
+      "mode": "hybrid",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.010995585002092412,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:4"
+      ],
+      "gold": [
+        "eval-content-handbook:4"
+      ]
+    },
+    {
+      "id": "cite-flexbox::v03",
+      "mode": "hybrid",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.01098906599872862,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:4"
+      ],
+      "gold": [
+        "eval-content-handbook:4"
+      ]
+    },
+    {
+      "id": "cite-flexbox::v04",
+      "mode": "hybrid",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.011773493999498896,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:4"
+      ],
+      "gold": [
+        "eval-content-handbook:4"
+      ]
+    },
+    {
+      "id": "cite-flexbox::v05",
+      "mode": "hybrid",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.010522665001190035,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:4"
+      ],
+      "gold": [
+        "eval-content-handbook:4"
+      ]
+    },
+    {
+      "id": "cite-flexbox::v06",
+      "mode": "hybrid",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.010225875001196982,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:4"
+      ],
+      "gold": [
+        "eval-content-handbook:4"
+      ]
+    },
+    {
+      "id": "cite-flexbox::v07",
+      "mode": "hybrid",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.01092203900043387,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:4"
+      ],
+      "gold": [
+        "eval-content-handbook:4"
+      ]
+    },
+    {
+      "id": "cite-flexbox::v08",
+      "mode": "hybrid",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.010926359002041863,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:4"
+      ],
+      "gold": [
+        "eval-content-handbook:4"
+      ]
+    },
+    {
+      "id": "cite-flexbox::v09",
+      "mode": "hybrid",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.010844494001503335,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:4",
+        "eval-content-handbook:2"
+      ],
+      "gold": [
+        "eval-content-handbook:4"
+      ]
+    },
+    {
+      "id": "cite-flexbox::v10",
+      "mode": "hybrid",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.010905174000072293,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:4"
+      ],
+      "gold": [
+        "eval-content-handbook:4"
+      ]
+    },
+    {
+      "id": "cite-flexbox::v11",
+      "mode": "hybrid",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.010405640001408756,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:4"
+      ],
+      "gold": [
+        "eval-content-handbook:4"
+      ]
+    },
+    {
+      "id": "cite-event-loop::v01",
+      "mode": "hybrid",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.011022487000445835,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:5"
+      ],
+      "gold": [
+        "eval-content-handbook:5"
+      ]
+    },
+    {
+      "id": "cite-event-loop::v02",
+      "mode": "hybrid",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.009868586999800755,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:5"
+      ],
+      "gold": [
+        "eval-content-handbook:5"
+      ]
+    },
+    {
+      "id": "cite-event-loop::v03",
+      "mode": "hybrid",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.010747421998530626,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:5"
+      ],
+      "gold": [
+        "eval-content-handbook:5"
+      ]
+    },
+    {
+      "id": "cite-event-loop::v04",
+      "mode": "hybrid",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.011115313998743659,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:5"
+      ],
+      "gold": [
+        "eval-content-handbook:5"
+      ]
+    },
+    {
+      "id": "cite-event-loop::v05",
+      "mode": "hybrid",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.010308067998266779,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:5"
+      ],
+      "gold": [
+        "eval-content-handbook:5"
+      ]
+    },
+    {
+      "id": "cite-event-loop::v06",
+      "mode": "hybrid",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.01053898100144579,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:5"
+      ],
+      "gold": [
+        "eval-content-handbook:5"
+      ]
+    },
+    {
+      "id": "cite-event-loop::v07",
+      "mode": "hybrid",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.011153191000630613,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:5"
+      ],
+      "gold": [
+        "eval-content-handbook:5"
+      ]
+    },
+    {
+      "id": "cite-event-loop::v08",
+      "mode": "hybrid",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.01051727099911659,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:5"
+      ],
+      "gold": [
+        "eval-content-handbook:5"
+      ]
+    },
+    {
+      "id": "cite-event-loop::v09",
+      "mode": "hybrid",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.011716650002199458,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:5"
+      ],
+      "gold": [
+        "eval-content-handbook:5"
+      ]
+    },
+    {
+      "id": "cite-event-loop::v10",
+      "mode": "hybrid",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.0107355149993964,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:5"
+      ],
+      "gold": [
+        "eval-content-handbook:5"
+      ]
+    },
+    {
+      "id": "cite-event-loop::v11",
+      "mode": "hybrid",
+      "recall_at_6": 1.0,
+      "mrr": 1.0,
+      "latency_seconds": 0.010988518999511143,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:5"
+      ],
+      "gold": [
+        "eval-content-handbook:5"
+      ]
+    },
+    {
+      "id": "cite-source-summary::v01",
+      "mode": "hybrid",
+      "recall_at_6": 0.0,
+      "mrr": 0.0,
+      "latency_seconds": 0.010247023998090299,
+      "error": null,
+      "retrieved": [],
+      "gold": [
+        "eval-content-handbook:1",
+        "eval-content-handbook:2",
+        "eval-content-handbook:3",
+        "eval-content-handbook:4",
+        "eval-content-handbook:5"
+      ]
+    },
+    {
+      "id": "cite-source-summary::v02",
+      "mode": "hybrid",
+      "recall_at_6": 0.0,
+      "mrr": 0.0,
+      "latency_seconds": 0.010413315001642331,
+      "error": null,
+      "retrieved": [],
+      "gold": [
+        "eval-content-handbook:1",
+        "eval-content-handbook:2",
+        "eval-content-handbook:3",
+        "eval-content-handbook:4",
+        "eval-content-handbook:5"
+      ]
+    },
+    {
+      "id": "cite-source-summary::v03",
+      "mode": "hybrid",
+      "recall_at_6": 0.0,
+      "mrr": 0.0,
+      "latency_seconds": 0.011055980001401622,
+      "error": null,
+      "retrieved": [],
+      "gold": [
+        "eval-content-handbook:1",
+        "eval-content-handbook:2",
+        "eval-content-handbook:3",
+        "eval-content-handbook:4",
+        "eval-content-handbook:5"
+      ]
+    },
+    {
+      "id": "cite-source-summary::v04",
+      "mode": "hybrid",
+      "recall_at_6": 0.4,
+      "mrr": 1.0,
+      "latency_seconds": 0.010588477001874708,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:3",
+        "eval-content-handbook:1"
+      ],
+      "gold": [
+        "eval-content-handbook:1",
+        "eval-content-handbook:2",
+        "eval-content-handbook:3",
+        "eval-content-handbook:4",
+        "eval-content-handbook:5"
+      ]
+    },
+    {
+      "id": "cite-source-summary::v05",
+      "mode": "hybrid",
+      "recall_at_6": 0.0,
+      "mrr": 0.0,
+      "latency_seconds": 0.011219721000088612,
+      "error": null,
+      "retrieved": [],
+      "gold": [
+        "eval-content-handbook:1",
+        "eval-content-handbook:2",
+        "eval-content-handbook:3",
+        "eval-content-handbook:4",
+        "eval-content-handbook:5"
+      ]
+    },
+    {
+      "id": "cite-source-summary::v06",
+      "mode": "hybrid",
+      "recall_at_6": 0.0,
+      "mrr": 0.0,
+      "latency_seconds": 0.010992776999046328,
+      "error": null,
+      "retrieved": [],
+      "gold": [
+        "eval-content-handbook:1",
+        "eval-content-handbook:2",
+        "eval-content-handbook:3",
+        "eval-content-handbook:4",
+        "eval-content-handbook:5"
+      ]
+    },
+    {
+      "id": "cite-source-summary::v07",
+      "mode": "hybrid",
+      "recall_at_6": 0.0,
+      "mrr": 0.0,
+      "latency_seconds": 0.011235320998821408,
+      "error": null,
+      "retrieved": [],
+      "gold": [
+        "eval-content-handbook:1",
+        "eval-content-handbook:2",
+        "eval-content-handbook:3",
+        "eval-content-handbook:4",
+        "eval-content-handbook:5"
+      ]
+    },
+    {
+      "id": "cite-source-summary::v08",
+      "mode": "hybrid",
+      "recall_at_6": 0.2,
+      "mrr": 1.0,
+      "latency_seconds": 0.011523437999130692,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:3"
+      ],
+      "gold": [
+        "eval-content-handbook:1",
+        "eval-content-handbook:2",
+        "eval-content-handbook:3",
+        "eval-content-handbook:4",
+        "eval-content-handbook:5"
+      ]
+    },
+    {
+      "id": "cite-source-summary::v09",
+      "mode": "hybrid",
+      "recall_at_6": 0.4,
+      "mrr": 1.0,
+      "latency_seconds": 0.010708507001254475,
+      "error": null,
+      "retrieved": [
+        "eval-content-handbook:1",
+        "eval-content-handbook:3"
+      ],
+      "gold": [
+        "eval-content-handbook:1",
+        "eval-content-handbook:2",
+        "eval-content-handbook:3",
+        "eval-content-handbook:4",
+        "eval-content-handbook:5"
+      ]
+    },
+    {
+      "id": "cite-source-summary::v10",
+      "mode": "hybrid",
+      "recall_at_6": 0.0,
+      "mrr": 0.0,
+      "latency_seconds": 0.012018556000839453,
+      "error": null,
+      "retrieved": [],
+      "gold": [
+        "eval-content-handbook:1",
+        "eval-content-handbook:2",
+        "eval-content-handbook:3",
+        "eval-content-handbook:4",
+        "eval-content-handbook:5"
+      ]
+    },
+    {
+      "id": "cite-source-summary::v11",
+      "mode": "hybrid",
+      "recall_at_6": 0.0,
+      "mrr": 0.0,
+      "latency_seconds": 0.011494718000903958,
+      "error": null,
+      "retrieved": [],
+      "gold": [
+        "eval-content-handbook:1",
+        "eval-content-handbook:2",
+        "eval-content-handbook:3",
+        "eval-content-handbook:4",
+        "eval-content-handbook:5"
+      ]
+    }
+  ]
+}

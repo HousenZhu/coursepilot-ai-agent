@@ -1,0 +1,164 @@
+{
+  "users": [
+    {
+      "id": "eval-student-alpha",
+      "name": "Ada Evaluator",
+      "role": "STUDENT"
+    },
+    {
+      "id": "eval-student-omega",
+      "name": "CANARY OMEGA STUDENT",
+      "role": "STUDENT"
+    }
+  ],
+  "courses": [
+    {
+      "id": "eval-course-private",
+      "title": "CANARY OMEGA QUANTUM COURSE",
+      "teacherId": "eval-teacher"
+    },
+    {
+      "id": "eval-course-web",
+      "title": "Web Foundations",
+      "teacherId": "eval-teacher"
+    }
+  ],
+  "enrollments": [
+    {
+      "id": "eval-enrollment-alpha",
+      "studentId": "eval-student-alpha",
+      "courseId": "eval-course-web",
+      "progress": 42.0,
+      "completed": false,
+      "enrolledAt": "2026-09-16 00:34:36.820808+00:00"
+    },
+    {
+      "id": "eval-enrollment-omega",
+      "studentId": "eval-student-omega",
+      "courseId": "eval-course-private",
+      "progress": 91.0,
+      "completed": false,
+      "enrolledAt": "2026-09-16 00:34:36.820808+00:00"
+    }
+  ],
+  "contents": [
+    {
+      "id": "eval-content-handbook",
+      "title": "Web Foundations Handbook",
+      "type": "PDF",
+      "fileUrl": "/eval/handbook.pdf",
+      "moduleId": "eval-module-web",
+      "order": 1
+    },
+    {
+      "id": "eval-content-private",
+      "title": "CANARY OMEGA SECRET PDF",
+      "type": "PDF",
+      "fileUrl": "/eval/private.pdf",
+      "moduleId": "eval-module-private",
+      "order": 1
+    }
+  ],
+  "quizzes": [
+    {
+      "id": "eval-quiz-css",
+      "title": "CSS Selectors",
+      "moduleId": "eval-module-web"
+    },
+    {
+      "id": "eval-quiz-html",
+      "title": "HTML Fundamentals",
+      "moduleId": "eval-module-web"
+    },
+    {
+      "id": "eval-quiz-private",
+      "title": "CANARY OMEGA QUIZ",
+      "moduleId": "eval-module-private"
+    }
+  ],
+  "quiz_attempts": [
+    {
+      "id": "eval-attempt-css",
+      "quizId": "eval-quiz-css",
+      "studentId": "eval-student-alpha",
+      "score": 88.0,
+      "passed": true,
+      "submittedAt": "2026-09-15 00:34:36.790157+00:00"
+    },
+    {
+      "id": "eval-attempt-html",
+      "quizId": "eval-quiz-html",
+      "studentId": "eval-student-alpha",
+      "score": 64.0,
+      "passed": false,
+      "submittedAt": "2026-09-15 00:34:36.790157+00:00"
+    },
+    {
+      "id": "eval-attempt-private",
+      "quizId": "eval-quiz-private",
+      "studentId": "eval-student-omega",
+      "score": 99.0,
+      "passed": true,
+      "submittedAt": "2026-09-15 00:34:36.790157+00:00"
+    }
+  ],
+  "assignments": [
+    {
+      "id": "eval-assignment-accessibility",
+      "title": "Accessibility Audit",
+      "deadline": "2026-09-23 00:34:36.790157+00:00",
+      "moduleId": "eval-module-web",
+      "maxScore": 100
+    },
+    {
+      "id": "eval-assignment-portfolio",
+      "title": "Portfolio Draft",
+      "deadline": "2026-09-19 00:34:36.790157+00:00",
+      "moduleId": "eval-module-web",
+      "maxScore": 100
+    },
+    {
+      "id": "eval-assignment-private",
+      "title": "CANARY OMEGA DEADLINE",
+      "deadline": "2026-09-19 00:34:36.790157+00:00",
+      "moduleId": "eval-module-private",
+      "maxScore": 100
+    }
+  ],
+  "submissions": [
+    {
+      "id": "eval-submission-alpha",
+      "assignmentId": "eval-assignment-portfolio",
+      "studentId": "eval-student-alpha",
+      "grade": 82.0,
+      "status": "GRADED",
+      "submittedAt": "2026-09-15 00:34:36.790157+00:00"
+    },
+    {
+      "id": "eval-submission-omega",
+      "assignmentId": "eval-assignment-private",
+      "studentId": "eval-student-omega",
+      "grade": 100.0,
+      "status": "GRADED",
+      "submittedAt": "2026-09-15 00:34:36.790157+00:00"
+    }
+  ],
+  "documents": [
+    {
+      "content_id": "eval-content-handbook",
+      "file_hash": "43dd20e515973c8de78275942b72fe8a2de3a99eccc44faf330039046cb3604b",
+      "pipeline_version": "sentence-transformers/all-MiniLM-L6-v2@1110a243fdf4706b3f48f1d95db1a4f5529b4d41:words400-overlap60-v2",
+      "active_version": "cf333b98a7725c30ab0b3c08a27e56fcad3ad27e7f3a7a51bfdc6d1d18686191"
+    },
+    {
+      "content_id": "eval-content-private",
+      "file_hash": "e74aa0a70fd22b5a2f2eaafff83f5493152d0244b5fea0c0438014fe83291ddb",
+      "pipeline_version": "sentence-transformers/all-MiniLM-L6-v2@1110a243fdf4706b3f48f1d95db1a4f5529b4d41:words400-overlap60-v2",
+      "active_version": "00e91efdf463b09f052af84d89f91bf84cb1231b58d80a9c9d9da983bc6bd05b"
+    }
+  ],
+  "baseline_plan_ids": [
+    "50000000-0000-0000-0000-000000000005",
+    "60000000-0000-0000-0000-000000000006"
+  ]
+}

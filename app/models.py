@@ -36,6 +36,7 @@ class Message(Base):
     )
     role: Mapped[str] = mapped_column(String(16))
     content: Mapped[str] = mapped_column(Text)
+    response_payload: Mapped[dict[str, Any] | None] = mapped_column(JSONB)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
 
@@ -86,4 +87,19 @@ class AgentRun(Base):
     completion_tokens: Mapped[int | None] = mapped_column(Integer)
     tool_calls: Mapped[list[dict[str, Any]]] = mapped_column(JSONB, default=list)
     error_code: Mapped[str | None] = mapped_column(String(80))
+    idempotency_key: Mapped[str | None] = mapped_column(String(128))
+    request_hash: Mapped[str | None] = mapped_column(String(64))
+    final_response: Mapped[dict[str, Any] | None] = mapped_column(JSONB)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+
+class DocumentVersion(Base):
+    __tablename__ = "document_versions"
+    __table_args__ = {"schema": "agent"}
+
+    content_id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    course_id: Mapped[str] = mapped_column(String(64), index=True)
+    file_hash: Mapped[str] = mapped_column(String(64))
+    pipeline_version: Mapped[str] = mapped_column(String(300))
+    active_version: Mapped[str] = mapped_column(String(64))
+    page_hashes: Mapped[list[str]] = mapped_column(JSONB)

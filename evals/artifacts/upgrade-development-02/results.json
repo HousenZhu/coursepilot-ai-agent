@@ -1,0 +1,26 @@
+{
+  "metrics": {
+    "total_cases": 0,
+    "successful_cases": 0,
+    "task_success": null,
+    "tool_routing_accuracy": null,
+    "grounding_correctness": null,
+    "citation_precision": null,
+    "citation_coverage": null,
+    "authorization_pass_rate": null,
+    "authorization_leaks": 0,
+    "authorization_assertion_failures": 0,
+    "unauthorized_accesses": 0,
+    "unauthorized_writes": 0,
+    "wrong_identity_attributions": 0,
+    "error_rate": null,
+    "ttft_sample_count": 0,
+    "ttft_p50_seconds": null,
+    "ttft_p95_seconds": null,
+    "latency_p50_seconds": null,
+    "latency_p95_seconds": null,
+    "category_success": {},
+    "failed_case_ids": []
+  },
+  "cases": []
+}

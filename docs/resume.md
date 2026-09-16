@@ -1,34 +1,39 @@
-# Resume Copy
+# Portfolio and Resume Material
 
-Use these bullets after the implementation has been deployed and verified. Do not add target
-metrics until `evals/results.json` contains the measured result.
+## Attribution
 
-## English
+CoursePilot is the individually implemented Python Agent extension to the team LearnHub
+LMS. Do not claim authorship of the upstream Next.js platform or all LMS functionality.
 
-**CoursePilot - Production-Grade AI Learning Agent**
+## English bullets
+
+**CoursePilot - Evidence-backed Learning Agent Backend**
 *Python, FastAPI, LangGraph, PostgreSQL/pgvector, SQLAlchemy, OpenTelemetry, Docker*
 
-- Architected a standalone asynchronous AI agent service integrated with a Next.js learning
-  platform, using bounded LangGraph tool orchestration and SSE streaming to deliver
-  personalized, stateful study guidance.
-- Built permission-scoped tools and a citation-backed RAG pipeline over course PDFs, combining
-  PostgreSQL learning records with pgvector retrieval while preventing cross-user access and
-  arbitrary model-generated SQL.
-- Established typed API contracts, persistent checkpoints, bounded retries, distributed
-  tracing, Prometheus metrics, and a 30-case evaluation suite covering tool routing,
-  grounding, prompt injection, and authorization.
+- Built an asynchronous AI backend integrated with a Next.js LMS, using authenticated
+  tool dispatch, database-backed request idempotency and transactional persistence of
+  conversation results and study plans.
+- Implemented enrollment-filtered hybrid retrieval over course PDFs, combining pgvector
+  and PostgreSQL full-text search with versioned citations and content-addressed embedding reuse.
+- Added failure-injection and authorization tests plus a reproducible evaluation harness
+  recording source, fixture and model fingerprints, complete attempt history and
+  first-validated-segment latency.
 
-After measurement, optionally add:
+These describe implemented mechanisms, not universal reliability or measured model quality.
+Add quantitative bullets only from a completed, valid report. Identify visible regression,
+reviewed transfer evaluation and hardware explicitly; do not call repeated development cases held-out.
+Source citation precision and human-reviewed claim support are different measurements.
 
-`Achieved X% tool-routing accuracy and Y% citation coverage across a 30-case offline evaluation set.`
+## Chinese bullets
 
-## Chinese
+**CoursePilot - 基于证据的个性化学习 Agent 后端**
 
-**CoursePilot - 生产级个性化学习 AI Agent**
+- 在团队 LearnHub LMS 基础上独立实现 Python AI 后端，通过 FastAPI、LangGraph 和 SSE
+  集成授权工具调度、数据库幂等控制及学习计划与最终回答的事务性保存。
+- 构建按选课权限过滤的 PDF 混合检索，结合 pgvector、PostgreSQL 全文检索与 RRF，
+  实现版本化引用、增量索引和未变化内容的 embedding 复用。
+- 建立权限隔离、故障注入与可复现评测流程，保存源码、数据和模型指纹，
+  分别衡量工具路由、来源引用正确性与首个已验证文本段延迟。
 
-- 基于 FastAPI 与 LangGraph 设计独立异步 Agent 服务，通过 SSE 与 Next.js LMS 集成，
-  实现学习诊断、多轮记忆及个性化学习计划生成。
-- 将课程进度、测验、作业和截止日期封装为强类型权限工具，并基于 PostgreSQL/pgvector
-  构建带页码引用的课程 PDF RAG，确保检索结果按用户和课程隔离。
-- 建立包含超时重试、持久化 checkpoint、结构化日志、Tracing、Metrics 和 30 条离线评测
-  的工程体系，覆盖工具路由、事实 grounding、Prompt injection 与越权访问。
+以上描述个人 Agent 模块贡献，不等同于整个团队 LMS 的作者归属。
+真实量化结果必须标注评测集性质；可见回归集不得包装成独立未见测试集。

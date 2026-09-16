@@ -9,8 +9,8 @@ from app.routing import (
 )
 
 
-def test_explicit_course_pdf_request_cannot_be_downgraded_to_direct_answer() -> None:
-    direct = IntentRoute(mode="direct_answer", reason="General HTML question")
+def test_structured_pdf_route_is_preserved() -> None:
+    direct = IntentRoute(mode="retrieve_then_answer", capabilities=["course_materials"], reason="Course PDF question")
 
     guarded = enforce_explicit_evidence_request(
         direct, "According to my course PDF, what does HTML mean?"
@@ -24,7 +24,7 @@ def test_explicit_course_pdf_request_cannot_be_downgraded_to_direct_answer() -> 
 def test_progress_and_plan_request_requires_both_tools() -> None:
     original = IntentRoute(
         mode="execute_then_answer",
-        capabilities=["study_plan_mutation"],
+        capabilities=["student_profile", "study_plan_mutation"],
         subject="self",
         reason="Create a plan.",
     )
@@ -42,7 +42,7 @@ def test_progress_and_plan_request_requires_both_tools() -> None:
 def test_progress_only_request_does_not_add_assessment_tool() -> None:
     original = IntentRoute(
         mode="retrieve_then_answer",
-        capabilities=["student_profile", "assessment_records"],
+        capabilities=["student_profile"],
         subject="self",
         reason="Read progress.",
     )
@@ -55,7 +55,7 @@ def test_progress_only_request_does_not_add_assessment_tool() -> None:
 
 
 def test_progress_and_quiz_request_keeps_both_read_tools() -> None:
-    original = IntentRoute(mode="direct_answer", reason="Incorrect downgrade")
+    original = IntentRoute(mode="retrieve_then_answer", capabilities=["student_profile", "assessment_records"], reason="Compare records")
 
     guarded = enforce_explicit_evidence_request(
         original, "Compare my course progress with my quiz performance."

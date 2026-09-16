@@ -1,0 +1,9 @@
+# First verified response segment, not raw provider token latency.
+histogram_quantile(0.50, sum by (le) (rate(coursepilot_agent_ttft_seconds_bucket[5m])))
+histogram_quantile(0.95, sum by (le) (rate(coursepilot_agent_ttft_seconds_bucket[5m])))
+
+# Stage latency. Low-cardinality stage labels only.
+histogram_quantile(0.95, sum by (le, stage) (rate(coursepilot_stage_duration_seconds_bucket[5m])))
+sum by (status) (rate(coursepilot_agent_runs_total[5m]))
+sum by (tool, status) (rate(coursepilot_tool_calls_total[5m]))
+sum by (direction) (rate(coursepilot_model_tokens_total[5m]))

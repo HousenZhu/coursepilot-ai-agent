@@ -17,6 +17,8 @@ pytestmark = pytest.mark.skipif(
 @pytest_asyncio.fixture(scope="module", autouse=True)
 async def isolated_lms_records() -> None:
     async with engine.begin() as connection:
+        if await connection.scalar(text("SELECT current_database()")) != "coursepilot_upgrade_test":
+            raise RuntimeError("Destructive isolation fixture requires coursepilot_upgrade_test")
         statements = [
             """CREATE TABLE IF NOT EXISTS users (
                   id text PRIMARY KEY, name text NOT NULL, role text NOT NULL

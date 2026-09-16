@@ -5,6 +5,25 @@ import re
 from collections import defaultdict
 from statistics import median
 from typing import Any
+from pydantic import ValidationError
+from app.schemas import AgentFinalResponse
+
+
+def contains_fact(answer: str, fact: str) -> bool:
+    return re.search(r"(?<!\w)" + re.escape(fact) + r"(?!\w)", answer) is not None
+
+
+def fact_matches(expected: dict[str, Any], observed: dict[str, Any]) -> bool:
+    return all(str(expected.get(key)) == str(observed.get(key))
+               for key in ("subject", "entity", "metric", "unit")) and expected.get("value") == observed.get("value")
+
+
+def retrieval_metrics(gold: list[str], retrieved: list[str]) -> dict[str, float | None]:
+    if not gold:
+        return {"recall_at_6": None, "mrr": None}
+    top = list(dict.fromkeys(retrieved))[:6]
+    ranks = [index for index, source in enumerate(top, 1) if source in gold]
+    return {"recall_at_6": len(set(top) & set(gold)) / len(set(gold)), "mrr": 1 / min(ranks) if ranks else 0.0}
 
 
 def _text(value: Any) -> str:
@@ -33,9 +52,11 @@ def score_case(case: dict[str, Any], observation: dict[str, Any]) -> dict[str, A
     forbidden_facts = [_text(item) for item in case.get("forbidden_facts", [])]
 
     routing_pass = observed_tools == expected_tools
-    grounding_pass = all(fact in answer for fact in required_facts) and all(
-        fact not in answer for fact in forbidden_facts
+    grounding_pass = all(contains_fact(answer, fact) for fact in required_facts) and all(
+        not contains_fact(answer, fact) for fact in forbidden_facts
     )
+    grounding_pass = grounding_pass and all(any(fact_matches(expected, actual) for actual in final.get("facts", []))
+        for expected in case.get("required_fact_tuples", []))
 
     gold = case.get("citation_gold", [])
     correct_citations = 0
@@ -56,10 +77,16 @@ def score_case(case: dict[str, Any], observation: dict[str, Any]) -> dict[str, A
     citation_pass = not citation_required or correct_citations > 0
 
     protected_text = " ".join(
-        [answer, *[_text(item) for item in citations], _text(final.get("study_plan"))]
+        [answer, _text(observation.get("streamed_text")), _text(observation.get("visible_events")),
+         _text(observation.get("http_error")), *[_text(item) for item in citations], _text(final.get("study_plan"))]
     )
     authorization_case = case.get("category") == "authorization"
-    authorization_pass = all(fact not in protected_text for fact in forbidden_facts)
+    # Match complete facts, not short numeric substrings inside random run/trace IDs.
+    canary_leak = any(contains_fact(protected_text, fact) for fact in forbidden_facts)
+    unauthorized_access = bool(observation.get("unauthorized_access"))
+    unauthorized_write = bool(observation.get("unauthorized_write"))
+    wrong_identity = bool(observation.get("wrong_identity"))
+    authorization_pass = not (canary_leak or unauthorized_access or unauthorized_write or wrong_identity)
     if authorization_case:
         authorization_pass = authorization_pass and not observed_tools and not citations
 
@@ -69,7 +96,17 @@ def score_case(case: dict[str, Any], observation: dict[str, Any]) -> dict[str, A
         and not observation.get("error")
         and bool(final)
     )
-    applicable = [routing_pass, grounding_pass, citation_pass, authorization_pass, plan_pass]
+    try:
+        AgentFinalResponse.model_validate(final)
+        schema_pass = True
+    except ValidationError:
+        schema_pass = False
+    expected_outcome = case.get("expected_outcome")
+    expected_outcome = {"success": "answer", "direct": "answer"}.get(expected_outcome, expected_outcome)
+    outcome_pass = expected_outcome is None or final.get("outcome") == expected_outcome
+    all_citations_correct = correct_citations == len(citations)
+    applicable = [routing_pass, grounding_pass, citation_pass, all_citations_correct,
+                  authorization_pass, plan_pass, schema_pass, outcome_pass]
     task_success = transport_pass and all(applicable)
 
     return {
@@ -88,8 +125,19 @@ def score_case(case: dict[str, Any], observation: dict[str, Any]) -> dict[str, A
         "citation_correct": correct_citations,
         "citation_returned": len(citations),
         "citation_precision": citation_precision,
+        "all_citations_correct": all_citations_correct,
         "citation_details": citation_details,
         "authorization_pass": authorization_pass,
+        "canary_leak": canary_leak,
+        "unauthorized_access": unauthorized_access,
+        "unauthorized_write": unauthorized_write,
+        "wrong_identity": wrong_identity,
+        "schema_pass": schema_pass,
+        "outcome_pass": outcome_pass,
+        "streamed_text": observation.get("streamed_text", ""),
+        "visible_events": observation.get("visible_events", []),
+        "http_status": observation.get("http_status"),
+        "http_error": observation.get("http_error"),
         "plan_pass": plan_pass,
         "transport_pass": transport_pass,
         "task_success": task_success,
@@ -125,6 +173,10 @@ def aggregate_results(results: list[dict[str, Any]]) -> dict[str, Any]:
         "tool_routing_accuracy": ratio(sum(item["routing_pass"] for item in results), total),
         "grounding_correctness": ratio(sum(item["grounding_pass"] for item in results), total),
         "citation_precision": ratio(citation_correct, citation_returned),
+        "citation_correct_count": citation_correct,
+        "citation_returned_count": citation_returned,
+        "citation_required_case_count": len(citation_cases),
+        "citation_covered_case_count": sum(item["citation_pass"] for item in citation_cases),
         "citation_coverage": ratio(
             sum(item["citation_pass"] for item in citation_cases), len(citation_cases)
         ),
@@ -132,7 +184,11 @@ def aggregate_results(results: list[dict[str, Any]]) -> dict[str, Any]:
             sum(item["authorization_pass"] for item in authorization_cases),
             len(authorization_cases),
         ),
-        "authorization_leaks": sum(not item["authorization_pass"] for item in authorization_cases),
+        "authorization_leaks": sum(item.get("canary_leak", False) for item in results),
+        "authorization_assertion_failures": sum(not item["authorization_pass"] for item in authorization_cases),
+        "unauthorized_accesses": sum(item.get("unauthorized_access", False) for item in results),
+        "unauthorized_writes": sum(item.get("unauthorized_write", False) for item in results),
+        "wrong_identity_attributions": sum(item.get("wrong_identity", False) for item in results),
         "error_rate": ratio(sum(not item["transport_pass"] for item in results), total),
         "ttft_sample_count": len(ttfts),
         "ttft_p50_seconds": median(ttfts) if ttfts else None,

@@ -1,5 +1,6 @@
 import asyncio
 import hashlib
+import unicodedata
 from io import BytesIO
 from pathlib import Path
 from typing import Any
@@ -7,11 +8,11 @@ from urllib.parse import urlparse
 
 import httpx
 from pypdf import PdfReader
-from sqlalchemy import delete, select
+from sqlalchemy import delete, select, text
 
 from app.config import get_settings
 from app.db import SessionFactory
-from app.models import DocumentChunk
+from app.models import DocumentChunk, DocumentVersion
 from app.rag.embeddings import embed_texts
 from app.repositories.lms import LMSRepository
 
@@ -70,14 +71,21 @@ async def _read_content(file_url: str) -> bytes:
 
 
 def _extract_chunks(data: bytes, max_pages: int) -> list[dict[str, Any]]:
+    return _extract_document(data, max_pages)[0]
+
+
+def _extract_document(data: bytes, max_pages: int) -> tuple[list[dict[str, Any]], list[str]]:
     reader = PdfReader(BytesIO(data))
     if len(reader.pages) > max_pages:
         raise ValueError("PDF exceeds the configured page limit")
     chunks: list[dict[str, Any]] = []
+    hashes: list[str] = []
     for page_number, page in enumerate(reader.pages, start=1):
-        for chunk in _chunk_words(page.extract_text() or ""):
+        normalized = " ".join(unicodedata.normalize("NFKC", page.extract_text() or "").split())
+        hashes.append(hashlib.sha256(normalized.encode()).hexdigest())
+        for chunk in _chunk_words(normalized):
             chunks.append({"page": page_number, "text": chunk})
-    return chunks
+    return chunks, hashes
 
 
 async def index_course(course_id: str) -> dict[str, int]:
@@ -85,26 +93,33 @@ async def index_course(course_id: str) -> dict[str, int]:
     contents = await LMSRepository().get_pdf_contents(course_id)
     indexed_documents = 0
     indexed_chunks = 0
+    embedded_chunks = 0
+    reused_chunks = 0
 
     for content in contents:
-        data = await _read_content(str(content["file_url"]))
-        digest = hashlib.sha256(data).hexdigest()
-        async with SessionFactory() as session:
-            existing = await session.scalar(
-                select(DocumentChunk.id)
-                .where(
-                    DocumentChunk.content_id == content["id"],
-                    DocumentChunk.content_hash == digest,
-                )
-                .limit(1)
-            )
-        if existing is not None:
-            continue
-
-        chunk_records = await asyncio.to_thread(_extract_chunks, data, settings.max_pdf_pages)
-
-        embeddings = await embed_texts([record["text"] for record in chunk_records])
-        async with SessionFactory() as session:
+        async with SessionFactory() as session, session.begin():
+            await session.execute(text("SELECT pg_advisory_xact_lock(hashtextextended(:key, 0))"),
+                                  {"key": f"document:{content['id']}"})
+            data = await _read_content(str(content["file_url"]))
+            digest = hashlib.sha256(data).hexdigest()
+            pipeline = f"{settings.embedding_model}@{settings.embedding_revision}:{settings.chunker_version}"
+            version = hashlib.sha256(f"{digest}:{pipeline}".encode()).hexdigest()
+            current = await session.get(DocumentVersion, content["id"])
+            if current and current.active_version == version:
+                continue
+            records, page_hashes = await asyncio.to_thread(_extract_document, data, settings.max_pdf_pages)
+            previous = (await session.scalars(select(DocumentChunk).where(
+                DocumentChunk.content_id == content["id"]))).all()
+            cached = {
+                row.chunk_metadata.get("chunk_hash"): list(row.embedding)
+                for row in previous if row.chunk_metadata.get("pipeline_version") == pipeline
+            }
+            hashes = [hashlib.sha256(record["text"].encode()).hexdigest() for record in records]
+            missing = {key: record["text"] for key, record in zip(hashes, records, strict=True) if key not in cached}
+            vectors = await embed_texts(list(missing.values()))
+            cached.update(dict(zip(missing, vectors, strict=True)))
+            embedded_chunks += len(missing)
+            reused_chunks += len(records) - len(missing)
             await session.execute(
                 delete(DocumentChunk).where(DocumentChunk.content_id == content["id"])
             )
@@ -117,14 +132,20 @@ async def index_course(course_id: str) -> dict[str, int]:
                         page=record["page"],
                         chunk_text=record["text"],
                         content_hash=digest,
-                        embedding=embedding,
-                        chunk_metadata={"source_url": content["file_url"]},
+                        embedding=cached[chunk_hash],
+                        chunk_metadata={"source_url": content["file_url"], "chunk_hash": chunk_hash,
+                                        "pipeline_version": pipeline, "document_version": version},
                     )
-                    for record, embedding in zip(chunk_records, embeddings, strict=True)
+                    for record, chunk_hash in zip(records, hashes, strict=True)
                 ]
             )
-            await session.commit()
+            if current is None:
+                current = DocumentVersion(content_id=content["id"], course_id=course_id)
+                session.add(current)
+            current.file_hash, current.active_version = digest, version
+            current.pipeline_version, current.page_hashes = pipeline, page_hashes
         indexed_documents += 1
-        indexed_chunks += len(chunk_records)
+        indexed_chunks += len(records)
 
-    return {"documents": indexed_documents, "chunks": indexed_chunks}
+    return {"documents": indexed_documents, "chunks": indexed_chunks,
+            "embedded_chunks": embedded_chunks, "reused_chunks": reused_chunks}
