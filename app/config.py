@@ -1,4 +1,5 @@
 from functools import lru_cache
+from typing import Literal
 
 from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -29,13 +30,16 @@ class Settings(BaseSettings):
 
     llm_api_key: str
     llm_base_url: str = "http://localhost:11434/v1"
-    llm_model: str = "qwen3:4b"
+    llm_model: str = "qwen3:8b"
+    llm_provider: Literal["ollama", "openai_compatible"] = "ollama"
+    llm_context_size: int = Field(default=8192, ge=4096, le=32768)
+    llm_startup_probe: bool = True
     llm_temperature: float = Field(default=0.2, ge=0, le=2)
     llm_disable_thinking: bool = False
-    llm_max_tokens: int = Field(default=1024, ge=64, le=8192)
-    llm_timeout_seconds: float = Field(default=25, gt=0, le=120)
+    llm_max_tokens: int = Field(default=4096, ge=64, le=8192)
+    llm_timeout_seconds: float = Field(default=120, gt=0, le=120)
     max_tool_iterations: int = Field(default=4, ge=1, le=8)
-    run_timeout_seconds: float = Field(default=180, gt=0, le=600)
+    run_timeout_seconds: float = Field(default=360, gt=0, le=600)
     max_concurrent_runs: int = Field(default=1, ge=1, le=16)
     migration_database_url: str | None = None
     checkpoint_setup: bool = True

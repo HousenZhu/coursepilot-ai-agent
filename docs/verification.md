@@ -37,7 +37,33 @@ final events and connection failures. The UI offers cancellation and owner-scope
 status lookup; it never automatically resubmits a possibly committed plan operation.
 The observability smoke check validates provisioning, not a dashboard driven by live LMS traffic.
 
-## Development Results
+## ReAct Development Verification
+
+Subsequent ReAct checks in the isolated development setup yielded:
+
+| Check | Recorded result |
+| --- | --- |
+| Main Python suite | 112 passed; 20 separate-fixture cases skipped |
+| Separate tenant isolation suite | 20 passed |
+| Subsequent targeted ReAct checks | 27 passed; overlaps the main suite |
+| Ruff | Passed |
+| mypy | Passed for 34 source files |
+| Web stream protocol tests | 5 passed |
+| Native Ollama startup probe | Tool call, observation use and thinking field all observed |
+| Real Qwen development smoke | 3/3 prompts returned an answer; requested plan scenario staged a plan |
+
+These are development checks, not a 180-case model evaluation. The smoke used three
+fixed prompts and does not establish overall task success, citation quality or latency.
+One observed plan suggested work on an already graded assignment; submission-status
+hints were added afterward, without a subsequent real-model quality measurement.
+The evaluation-only fault harness has guarded unit coverage, but the five fault
+candidates have not been exercised through the real-model HTTP evaluation.
+
+No new Next.js production build is claimed for the ReAct changes. The earlier build
+result in the table above belongs to the preceding implementation. The 180 candidate
+cases have not been run or frozen; their new labels remain pending human review.
+
+## Historical Dispatcher Development Results
 
 Both runs below contain the same 30 visible development prompts. Routing was adjusted
 using these results; neither run is an independent final evaluation.
@@ -62,7 +88,7 @@ this is development feedback, not a controlled causal latency improvement experi
 The development-04 precision denominator is only 7 returned citations (7 correct), with
 6 citation-required cases and 29 first-validated-text samples. Do not hide these small denominators.
 
-## Full Regression
+## Historical Dispatcher Full Regression
 
 The 330-case run `upgrade-regression-330-v1` uses all legacy variants 1-11. Its CLI split
 is historically named `heldout`, but the manifest labels it `visible_regression`.
@@ -102,7 +128,7 @@ Hardware/model: RTX 3080 10GB, driver 591.44, Qwen3-8B Q4_K_M, loaded context 40
 temperature 0, concurrency 1 and 10 warmups. Local engineering checks also ran during
 this regression: latency is descriptive, not a dedicated idle-machine performance result.
 
-## Retrieval Control
+## Historical Retrieval Control
 
 The completed paired retrieval run covers all 66 source-labelled regression queries.
 Vector-only and hybrid both achieved Recall@6 0.8485 and MRR 0.8561 on the small fixture.

@@ -54,6 +54,7 @@ async def _read_sse(
     message: str,
     course_id: str | None,
     conversation_id: str | None,
+    fault: str | None = None,
 ) -> dict[str, Any]:
     started = time.perf_counter()
     first_token_at: float | None = None
@@ -73,7 +74,7 @@ async def _read_sse(
         async with client.stream(
             "POST",
             "/v1/agent/runs/stream",
-            headers={"Authorization": f"Bearer {create_token(user_id)}"},
+            headers={"Authorization": f"Bearer {create_token(user_id)}", **({"X-Eval-Fault": fault} if fault else {})},
             json=payload,
         ) as response:
             status_code = response.status_code
@@ -140,6 +141,7 @@ async def run_case(
             message=turn,
             course_id=course_id,
             conversation_id=conversation_id,
+            fault=case.get("fault"),
         )
         final = observation.get("final") or {}
         all_streamed.append(observation.get("streamed_text", ""))
@@ -263,6 +265,13 @@ def build_report(run_id: str, split: str, metrics: dict[str, Any], manifest: dic
 async def async_main(args: argparse.Namespace) -> Path:
     cases = (json.loads(args.cases.read_text(encoding="utf-8")) if args.cases else
              expand_templates(load_templates(args.templates), args.split))
+    if not args.cases and args.suite == "react":
+        from evals.react_suite import adapt_case, new_cases, select_regression
+        development = [adapt_case(c) for c in expand_templates(load_templates(args.templates), "development")]
+        regression, _ = select_regression(args.templates)
+        cases = development if args.split == "development" else regression + new_cases()
+        if args.split == "all":
+            cases = development + cases
     if args.template_id:
         if args.split != "development" or args.cases:
             raise ValueError("Template filtering is development-only")
@@ -270,7 +279,7 @@ async def async_main(args: argparse.Namespace) -> Path:
     if not cases or len({case["id"] for case in cases}) != len(cases):
         raise ValueError("Cases must have unique IDs and must not be empty")
     dataset_hash = dataset_sha256(cases)
-    role = "visible_regression"
+    role = "development" if args.split == "development" and not args.cases else "visible_regression"
     if args.review:
         review = json.loads(args.review.read_text(encoding="utf-8"))
         if not args.cases or review.get("dataset_sha256") != dataset_hash or not review.get("reviewer") or not review.get("approved"):
@@ -291,7 +300,7 @@ async def async_main(args: argparse.Namespace) -> Path:
         "model_digest": (model.get("installed_model") or {}).get("digest"),
         "dependencies": dependency_versions(),
         "settings": {name: os.getenv(name) for name in (
-            "LLM_MODEL", "LLM_TEMPERATURE", "LLM_MAX_TOKENS", "LLM_DISABLE_THINKING",
+            "LLM_MODEL", "LLM_PROVIDER", "LLM_CONTEXT_SIZE", "LLM_TEMPERATURE", "LLM_MAX_TOKENS", "LLM_DISABLE_THINKING",
             "LLM_TIMEOUT_SECONDS", "RUN_TIMEOUT_SECONDS", "RETRIEVAL_MODE", "EMBEDDING_MODEL")},
     }
     manifest_path = artifact_dir / "manifest.json"
@@ -312,7 +321,7 @@ async def async_main(args: argparse.Namespace) -> Path:
     else:
         manifest = {
             "run_id": run_id, "started_at_utc": datetime.now(UTC).isoformat(), "split": args.split,
-            "dataset_role": role, "dataset_sha256": dataset_hash, "fingerprint": fingerprint,
+            "dataset_role": role, "dataset_sha256": dataset_hash, "fingerprint": fingerprint, "suite": args.suite,
             "expected_cases": len(cases),
             "git_commit": os.getenv("EVAL_GIT_COMMIT", "working-tree"),
             "model": {"name": os.getenv("LLM_MODEL", "qwen3:8b"), "ollama": model},
@@ -387,11 +396,12 @@ def parse_args() -> argparse.Namespace:
         "--templates", type=Path, default=Path(__file__).with_name("templates.jsonl")
     )
     parser.add_argument("--split", choices=["development", "heldout", "all"], default="heldout")
+    parser.add_argument("--suite", choices=["react", "legacy"], default="react")
     parser.add_argument("--output-dir", type=Path, default=Path(__file__).with_name("artifacts"))
     parser.add_argument("--run-id")
     parser.add_argument("--template-id", help="Run one template for development diagnostics")
     parser.add_argument("--warmups", type=int, default=10)
-    parser.add_argument("--timeout", type=float, default=180)
+    parser.add_argument("--timeout", type=float, default=390)
     return parser.parse_args()
 
 

@@ -7,11 +7,13 @@ flowchart LR
   BFF[Authenticated Next.js BFF] --> API[FastAPI + internal JWT]
   API --> LOCK[Idempotency + conversation advisory lock]
   LOCK --> ROUTE[Structured intent and course scope]
-  ROUTE --> TOOLS[Fixed scoped tools]
+  ROUTE --> AGENT[Model selects tools]
+  AGENT --> TOOLS[Validated scoped tools]
+  TOOLS --> AGENT
   TOOLS --> LMS[(LMS read-only role)]
   TOOLS --> RAG[Vector + full-text RRF]
   RAG --> DB[(Versioned chunks)]
-  TOOLS --> OUTPUT[Deterministic facts / checked paragraphs]
+  AGENT --> OUTPUT[Deterministic facts / checked paragraphs]
   OUTPUT --> TX[Atomic result, message and plan commit]
   OUTPUT --> SSE[Verified segment SSE]
 ```
@@ -33,12 +35,18 @@ entailment; retrieved malicious text can influence wording; repository filtering
 database row-level security. The runtime role can read LMS tables, so SQL injection or
 compromise of the service itself is outside what the JWT boundary can contain.
 
-## ADR 1: bounded deterministic dispatch
+## ADR 1: bounded model-driven ReAct (supersedes deterministic dispatch)
 
-A single typed route supplies capabilities and bounded parameters. Supported tools are
-self-contained, so dispatch does not need an additional LLM planner. Read-only calls use
-independent sessions. Plan creation computes a draft in memory; it cannot commit itself.
-This saves model calls but deliberately gives up open-ended tool discovery.
+A typed policy determines scope and plan-write intent, not the tool sequence. The model
+chooses from four tools and receives their actual observations before choosing another
+action or an answer. Independent reads use separate sessions and run concurrently.
+Four rounds and eight calls bound the loop. Model-authored plans remain staged until
+the final transaction. This costs more model calls than the historical dispatcher but
+supports evidence-dependent follow-up actions. Thinking is internal, not a security boundary.
+The model supplies one-based plan day indices. The service turns them into dates from
+its current local date and checks every requested day, daily minutes, course scope and
+observed evidence before staging. See [the ReAct upgrade](react-upgrade.md) for provider
+settings, exact plan rules and evaluation status.
 
 ## ADR 2: hybrid retrieval and version publication
 
@@ -56,8 +64,8 @@ Historical versions are not retained: an old source link returns not-found after
 
 LMS numerical facts are rendered from fixed query output. PDF paragraphs must name current,
 authorized source IDs whose excerpts occur in the indexed chunks. Invalid paragraphs are
-never sent. Completed paragraphs may already be visible when a later paragraph fails;
-the final response preserves them and records dependency_failure.
+never sent. The complete draft is validated before paragraphs are emitted. One repair
+is allowed; persistent validation failure clears pending plans and returns a conservative answer.
 
 SSE token events therefore measure first validated text, not provider TTFT.
 General conversation is buffered before display and is not described as grounded in LMS data.

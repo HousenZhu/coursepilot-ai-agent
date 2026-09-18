@@ -52,6 +52,15 @@ def score_case(case: dict[str, Any], observation: dict[str, Any]) -> dict[str, A
     forbidden_facts = [_text(item) for item in case.get("forbidden_facts", [])]
 
     routing_pass = observed_tools == expected_tools
+    if "required_capabilities" in case:
+        observed_capabilities = set()
+        for event in observation.get("visible_events", []):
+            data = event.get("data", {})
+            if event.get("event") == "tool_status" and data.get("status") == "completed":
+                observed_capabilities.update(data.get("capabilities", []))
+                observed_capabilities.add(data.get("name"))
+        routing_pass = set(case["required_capabilities"]).issubset(observed_capabilities)
+        routing_pass = routing_pass and not (observed_tools & set(case.get("forbidden_tools", [])))
     grounding_pass = all(contains_fact(answer, fact) for fact in required_facts) and all(
         not contains_fact(answer, fact) for fact in forbidden_facts
     )
@@ -104,9 +113,25 @@ def score_case(case: dict[str, Any], observation: dict[str, Any]) -> dict[str, A
     expected_outcome = case.get("expected_outcome")
     expected_outcome = {"success": "answer", "direct": "answer"}.get(expected_outcome, expected_outcome)
     outcome_pass = expected_outcome is None or final.get("outcome") == expected_outcome
+    if case.get("allowed_outcomes"):
+        outcome_pass = final.get("outcome") in case["allowed_outcomes"]
+    recovery_pass = True
+    if case.get("requires_fault_injection"):
+        recovery_pass = any(e.get("data", {}).get("failed_sections")
+                            for e in observation.get("visible_events", []) if e.get("event") == "tool_status")
+        recovery_pass = recovery_pass and not final.get("study_plan")
+    if (case.get("allow_http_refusal") and observation.get("http_status") in {403, 404}
+            and not observed_tools and not citations and not canary_leak):
+        transport_pass = schema_pass = outcome_pass = True
     all_citations_correct = correct_citations == len(citations)
+    started_calls = [e.get("data", {}).get("id") for e in observation.get("visible_events", [])
+                     if e.get("event") == "tool_status" and e.get("data", {}).get("status") == "started"]
+    finished_calls = {e.get("data", {}).get("id") for e in observation.get("visible_events", [])
+                      if e.get("event") == "tool_status" and e.get("data", {}).get("status") in {"completed", "failed"}}
+    loop_pass = len(started_calls) <= 8 and set(started_calls).issubset(finished_calls)
     applicable = [routing_pass, grounding_pass, citation_pass, all_citations_correct,
-                  authorization_pass, plan_pass, schema_pass, outcome_pass]
+                  authorization_pass, plan_pass, schema_pass, outcome_pass,
+                  loop_pass if "required_capabilities" in case else True, recovery_pass]
     task_success = transport_pass and all(applicable)
 
     return {
@@ -139,6 +164,10 @@ def score_case(case: dict[str, Any], observation: dict[str, Any]) -> dict[str, A
         "http_status": observation.get("http_status"),
         "http_error": observation.get("http_error"),
         "plan_pass": plan_pass,
+        "plan_required": bool(case.get("study_plan_required")),
+        "loop_pass": loop_pass,
+        "recovery_pass": recovery_pass,
+        "tool_call_count": len(started_calls),
         "transport_pass": transport_pass,
         "task_success": task_success,
         "ttft_seconds": observation.get("ttft_seconds"),
@@ -155,6 +184,7 @@ def aggregate_results(results: list[dict[str, Any]]) -> dict[str, Any]:
     citation_correct = sum(item["citation_correct"] for item in results)
     citation_cases = [item for item in results if item["citation_required"]]
     authorization_cases = [item for item in results if item["category"] == "authorization"]
+    plan_cases = [item for item in results if item.get("plan_required")]
     ttfts = [float(item["ttft_seconds"]) for item in results if item["ttft_seconds"] is not None]
     latencies = [
         float(item["latency_seconds"])
@@ -170,6 +200,8 @@ def aggregate_results(results: list[dict[str, Any]]) -> dict[str, Any]:
         "total_cases": total,
         "successful_cases": sum(item["task_success"] for item in results),
         "task_success": ratio(sum(item["task_success"] for item in results), total),
+        "plan_success_rate": ratio(sum(item["plan_pass"] and item["schema_pass"] for item in plan_cases), len(plan_cases)),
+        "loop_completion_rate": ratio(sum(item.get("loop_pass", False) and item["transport_pass"] for item in results), total),
         "tool_routing_accuracy": ratio(sum(item["routing_pass"] for item in results), total),
         "grounding_correctness": ratio(sum(item["grounding_pass"] for item in results), total),
         "citation_precision": ratio(citation_correct, citation_returned),

@@ -23,11 +23,13 @@ class Citation(BaseModel):
 
 
 class StudyPlanItem(BaseModel):
+    model_config = ConfigDict(extra="forbid")
     day: date
-    title: str
+    title: str = Field(min_length=1, max_length=500)
     minutes: int = Field(ge=10, le=240)
     priority: Literal["high", "medium", "low"]
-    reason: str
+    reason: str = Field(min_length=1, max_length=1000)
+    evidence_ids: list[str] = Field(default_factory=list)
 
 
 class StudyPlan(BaseModel):

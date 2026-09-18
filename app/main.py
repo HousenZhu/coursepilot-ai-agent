@@ -17,6 +17,9 @@ configure_logging(settings.log_level)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncIterator[None]:
+    if settings.llm_startup_probe:
+        from app.agent.probe import check_model
+        await check_model()
     async with AsyncPostgresSaver.from_conn_string(
         settings.checkpoint_database_url
     ) as checkpointer:

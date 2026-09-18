@@ -15,7 +15,7 @@ from app.models import AgentRun, DocumentChunk, DocumentVersion, Message, StudyP
 from app.repositories.agent import AgentRepository, RunConflict
 from app.services.agent_service import AgentService
 from app.routing import IntentRoute
-from langchain_core.messages import AIMessage, AIMessageChunk
+from langchain_core.messages import AIMessage
 
 pytestmark = [pytest.mark.asyncio, pytest.mark.skipif(os.getenv("RUN_UPGRADE_INTEGRATION_TESTS") != "1",
                                                     reason="Disposable upgrade database only")]
@@ -226,18 +226,39 @@ async def test_real_graph_with_controlled_model(monkeypatch: pytest.MonkeyPatch,
             router = ControlledModel()
             router.structured = True
             return router
+        def bind_tools(self, tools):
+            return self
         async def ainvoke(self, messages):
             if self.structured:
                 return IntentRoute(mode="execute_then_answer" if capability == "study_plan_mutation" else "retrieve_then_answer",
-                    capabilities=["course_materials" if capability == "invalid_source" else capability], course_id="eval-course-web", query="HTML structures documents", reason="Fixture route")
-            return AIMessage(content="General guidance")
-        async def astream(self, messages):
-            sources = json.loads(str(messages[0].content).split("\n")[1])
-            if capability == "invalid_source":
-                yield AIMessageChunk(content=json.dumps({"text": "UNVERIFIED-DRAFT", "source_ids": ["invented"]}) + "\n")
-            else:
-                yield AIMessageChunk(content=json.dumps({"text": sources[0]["excerpt"], "source_ids": [sources[0]["source_id"]]}) + "\n")
-    monkeypatch.setattr("app.agent.graph.ChatOpenAI", ControlledModel)
+                    capabilities=["course_materials" if capability == "invalid_source" else capability],
+                    mutates_state=capability == "study_plan_mutation",
+                    horizon_days=3,
+                    course_id="eval-course-web", query="HTML structures documents", reason="Fixture route")
+            from langchain_core.messages import ToolMessage
+            observations = [json.loads(m.content) for m in messages if isinstance(m, ToolMessage)]
+            if not observations:
+                name = "search_course_materials" if capability in {"course_materials", "invalid_source"} else "get_learning_snapshot"
+                section = {"assessment_records": "assessments", "deadlines": "deadlines"}.get(capability, "profile")
+                args = {"query": "HTML structures documents"} if name == "search_course_materials" else {"sections": [section]}
+                if capability == "study_plan_mutation":
+                    args = {"sections": ["profile", "assessments", "deadlines"]}
+                return AIMessage(content="", tool_calls=[{"id": "read", "name": name, "args": args}])
+            first = observations[0]
+            if capability in {"course_materials", "invalid_source"}:
+                source = first["citations"][0]
+                key = "invented" if capability == "invalid_source" else source["source_id"]
+                return AIMessage(content=json.dumps({"paragraphs": [{"text": "UNVERIFIED-DRAFT" if capability == "invalid_source" else source["excerpt"], "evidence_ids": [key]}]}))
+            evidence = first["sections"][0]["evidence"][0]
+            key = evidence["id"]
+            if capability == "study_plan_mutation" and len(observations) == 1:
+                return AIMessage(content="", tool_calls=[{"id": "stage", "name": "stage_study_plan", "args": {
+                    "horizon_days": 3,
+                    "items": [{"day_index": day, "title": "Practice HTML", "minutes": 30,
+                               "priority": "high", "reason": "Build on your course progress", "evidence_ids": [key]}
+                              for day in (1, 2, 3)]}}])
+            return AIMessage(content=json.dumps({"paragraphs": [{"text": "{{" + key + "}}. Practice the weakest topic next.", "evidence_ids": [key]}]}))
+    monkeypatch.setattr("app.agent.graph.chat_model", ControlledModel)
     service = AgentService(MemorySaver())
     events = [event async for event in service.stream_run(user_id=USER, conversation_id=None,
         message="Read verified records", course_id="eval-course-web")]

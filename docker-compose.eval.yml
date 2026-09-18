@@ -7,10 +7,12 @@ x-environment: &environment
   LLM_BASE_URL: http://host.docker.internal:11434/v1
   LLM_MODEL: qwen3:8b
   LLM_TEMPERATURE: "0"
-  LLM_DISABLE_THINKING: "true"
-  LLM_MAX_TOKENS: "1024"
+  LLM_PROVIDER: ollama
+  LLM_CONTEXT_SIZE: "8192"
+  LLM_DISABLE_THINKING: "false"
+  LLM_MAX_TOKENS: "4096"
   LLM_TIMEOUT_SECONDS: "120"
-  RUN_TIMEOUT_SECONDS: "180"
+  RUN_TIMEOUT_SECONDS: "360"
   RETRIEVAL_MODE: ${RETRIEVAL_MODE:-hybrid}
   UPLOADS_DIR: /data
   LOG_LEVEL: WARNING
@@ -55,6 +57,7 @@ services:
         condition: service_healthy
   eval-agent:
     image: coursepilot-eval-v2
+    command: ["uvicorn", "evals.fault_app:app", "--host", "0.0.0.0", "--port", "8000"]
     environment:
       <<: *environment
       DATABASE_URL: postgresql+asyncpg://coursepilot_agent:eval-runtime-only@eval-postgres:5432/coursepilot_eval

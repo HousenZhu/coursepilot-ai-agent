@@ -19,6 +19,6 @@ COPY app ./app
 COPY alembic.ini ./
 COPY alembic ./alembic
 EXPOSE 8000
-HEALTHCHECK --interval=20s --timeout=5s --retries=5 \
+HEALTHCHECK --start-period=360s --interval=20s --timeout=5s --retries=5 \
   CMD curl --fail http://localhost:8000/health/live || exit 1
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]

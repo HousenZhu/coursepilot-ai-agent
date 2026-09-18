@@ -19,7 +19,8 @@ The request histogram currently covers completed runs only. Histogram quantiles 
 bucket estimates; the evaluation runner reports percentiles from individual requests.
 
 For traces, configure `OTEL_EXPORTER_OTLP_ENDPOINT` with your OTLP gRPC collector address.
-Node spans cover validation, route, tool dispatch and answer verification, with HTTP and
+Node spans cover validation, request policy, model decisions, tool execution and answer
+verification, with HTTP and
 database instrumentation. No trace collector is bundled or required for normal startup.
 The application `trace_id` stored on a run is a correlation ID, not a promise that it
 equals the OpenTelemetry trace ID. Avoid collecting request bodies or sensitive headers.

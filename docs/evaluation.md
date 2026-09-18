@@ -1,5 +1,19 @@
 # Evaluation Protocol
 
+## ReAct candidate status
+
+The current ReAct candidate set has 180 cases: five deterministically selected variants
+from each of the 30 visible legacy templates (150), plus 30 new scenarios. Selection
+uses a fixed seed and case-ID hash, independent of observed pass rates. The new scenarios
+cover tool feedback, parallel record reads, evidence synthesis, plans, authorization and
+fault recovery. Their labels remain pending human review. No 180-case run has been made
+and no new ReAct task success, citation or latency score is available.
+
+The default ReAct runner's `heldout` CLI split selects these visible candidates. The
+name is inherited from the legacy runner; it does not confer unseen-test status.
+`development` selects the original 30 development variants. The earlier 330-case report
+measures deterministic dispatch, so its metrics cannot be assigned to ReAct.
+
 ## Separate populations
 
 The legacy 30 templates (development variant 0; 330 other variants) are all visible
@@ -20,8 +34,12 @@ of independence; the reviewer remains responsible for that statement.
 
 ## Scoring
 
-- Exact tool-set matching measures routing; supported alternative valid routes must be
-  reviewed as labels rather than silently added after seeing results.
+- ReAct routing checks that required capabilities completed and forbidden tools were
+  not called. It records the actual tool chain, call count and whether each started
+  call completed or failed. Equivalent valid trajectories can satisfy the same need.
+  Legacy reports retain their exact tool-set score under the old scorer.
+- An HTTP 403/404 can satisfy a case explicitly labeled for refusal if no tool,
+  citation or private data leaks. Label changes are recorded separately from runs.
 - required_fact_tuples compare subject, entity, metric, value and unit. Legacy required_facts
   still use boundary-aware lexical matching and are explicitly a weaker regression check.
 - Source precision counts every returned citation. A source is matched by content ID,
@@ -36,8 +54,15 @@ of independence; the reviewer remains responsible for that statement.
   claim-support rate is not available.
 - Provider errors, missing final, invalid final schema and outcome mismatches fail the case.
   Refusals that emit text are included in first-validated-text timing. Report denominators.
+- Plan cases check that a plan was saved and the requested horizon, per-day tasks and
+  evidence are valid. Recovery cases require an observed failed snapshot section and
+  no saved plan. Report plan validity and loop completion separately.
 
 ## Controlled experiments
+
+Five recovery candidates use `evals.fault_app` in the isolated evaluation stack. Its
+database-name guard requires `coursepilot_eval`; fault headers are not available in the
+production entrypoint. A normal successful request does not exercise these cases.
 
 Re-run the baseline with the same corrected scorer and fixture before comparing variants.
 Change only one factor: vector-only versus hybrid retrieval, embedding reuse, or orchestration.

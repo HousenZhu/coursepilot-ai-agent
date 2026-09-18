@@ -8,7 +8,15 @@ This repository is the canonical Agent implementation. The team LMS lives in
 [personalized-learning-platform, branch ZHS](https://github.com/HousenZhu/personalized-learning-platform/tree/ZHS).
 It is not copied into this personal repository.
 
-## Measured Results
+## ReAct Upgrade
+
+The current implementation uses model-selected tool calls, parallel learning snapshots,
+native Ollama Thinking and evidence-validated answers. The model observes tool results
+before choosing another tool or composing advice. See [execution, plan rules, configuration
+and evaluation status](docs/react-upgrade.md). The 180 candidate cases have not been run
+or frozen; the figures below belong to the previous dispatcher.
+
+## Historical Measured Results
 
 The completed Qwen3-8B Q4_K_M run contains **330 visible regression cases**, not an
 independent held-out benchmark. On an RTX 3080 10GB with context 4096:
@@ -37,27 +45,29 @@ git clone https://github.com/HousenZhu/coursepilot-ai-agent.git
 cd coursepilot-ai-agent
 ollama pull qwen3:8b
 docker compose -f docker-compose.eval.yml up --build -d
-docker compose -f docker-compose.eval.yml exec -T eval-agent python -m evals.run --split development --warmups 10 --run-id my-development-run
 ```
 
-The API is available at `http://localhost:8001/docs`. The evaluation runner signs its
-own short-lived demo JWTs and exercises the actual API. The fixture has two students,
-separate learning records and original-text PDFs. Demo credentials are not production secrets.
-Use a new run ID for each run. Do not reseed an active evaluation.
+The API is available at `http://localhost:8001/docs`. The isolated fixture has two
+students, separate learning records and original-text PDFs. Demo credentials are not
+production secrets. See [evaluation protocol](docs/evaluation.md) before running any
+candidate suite. Do not reseed an active request or evaluation.
 
 ## Runtime
 
 ```text
 Next.js BFF / Better Auth -> short-lived JWT -> FastAPI
-    -> reserve request + conversation lock -> structured route
-    -> permission-scoped tools -> deterministic records / validated source paragraphs
+    -> reserve request + conversation lock -> request policy and course scope
+    -> model chooses tools -> scoped tool results -> model decides again or answers
+    -> deterministic records / validated source paragraphs
     -> atomic final response + messages + staged plan
 PostgreSQL public: SELECT only; agent schema: application-owned writes
 ```
 
-Known independent tools execute concurrently, each with its own database session.
-The current capabilities do not require an iterative model planner; plan creation gathers
-its own evidence. There is no arbitrary SQL, multi-agent orchestration, or hidden tool loop.
+The four model-visible tools read learning snapshots, search course materials, read the
+active plan, and stage a new plan. Independent reads execute concurrently, each with its
+own database session. The model can inspect results and request another tool, within
+four rounds and eight calls. Plan writes require trusted request intent and complete
+learning evidence. There is no arbitrary SQL or multi-agent orchestration.
 
 ## Run With The LMS
 
@@ -109,35 +119,21 @@ docker compose -f docker-compose.test.yml down -v
 ```
 
 The first suite covers migration, actual PDF ingestion, negative/positive ownership,
-idempotency, cancellation, timeouts, rollback and controlled-model LangGraph execution.
+idempotency, cancellation, timeouts, rollback and controlled-model ReAct execution.
 The legacy repository isolation suite runs separately because it replaces its fixture.
 CI uses the locked container dependencies, Ruff and mypy.
-See [executed checks and evidence limits](docs/verification.md) and the optional
+See [previously executed checks and evidence limits](docs/verification.md) and the optional
 [local metrics dashboard](docs/observability.md).
 
-## Real Model Evaluation
+## Evaluation Status
 
-Start Ollama with `qwen3:8b` installed. From this directory:
-
-```bash
-docker compose -f docker-compose.eval.yml up --build -d
-docker compose -f docker-compose.eval.yml exec -T eval-agent python -m evals.run --split development --warmups 10 --run-id development-v2
-```
-
-The init service seeds its own database and real PDFs. Do not restart init or reseed while
-a run is in progress. The database is retained for inspection/resume.
-The existing 330-case subset is **visible regression data**, regardless of its legacy
-`heldout` CLI spelling. It is not a new independent test set.
-Artifacts include source snapshots, exact cases, fixture snapshot, dependency/model
-metadata, an append-only attempt journal, JSON results and a Markdown report.
-
-To resume, use the existing stack and pass the same run ID plus `--resume`. Interrupted
-attempts remain failures; changed source/model/settings/fixtures reject resume.
-Cleanup only this isolated stack with `docker compose -f docker-compose.eval.yml down -v`.
-
-`evals/transfer-candidates.json` contains unreviewed, visible transfer cases for the
-`EVAL_FIXTURE_PROFILE=transfer-v1` fixture. See [evaluation protocol](docs/evaluation.md).
-Do not label them unseen or use target metrics as measurements.
+The candidate ReAct suite contains 150 deterministic selections from the visible legacy
+regression set and 30 new, unreviewed scenarios. It has not been executed or frozen.
+The default ReAct runner uses `--split development` for the original 30 development
+prompts and its legacy `--split heldout` spelling for the 180 visible candidates;
+that spelling does not make them independent unseen cases. The earlier 330-case
+reports measure the old dispatcher only. See [evaluation protocol](docs/evaluation.md)
+and [the verification record](docs/verification.md).
 
 ## Limits
 

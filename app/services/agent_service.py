@@ -1,4 +1,5 @@
 import asyncio
+import json
 import time
 from collections.abc import AsyncGenerator
 from typing import Any
@@ -69,7 +70,7 @@ class AgentService:
                         continue
                     if mode != "updates" or not isinstance(data, dict):
                         continue
-                    for output in (data.get("planner") or {}).get("messages", []):
+                    for output in (data.get("agent") or {}).get("messages", []):
                         if isinstance(output, AIMessage):
                             for call in output.tool_calls:
                                 calls.append({"id": call["id"], "name": call["name"],
@@ -77,7 +78,12 @@ class AgentService:
                                 yield "tool_status", {"id": call["id"], "name": call["name"], "status": "started"}
                     for output in (data.get("tools") or {}).get("messages", []):
                         if isinstance(output, ToolMessage):
-                            yield "tool_status", {"id": output.tool_call_id, "name": output.name, "status": "completed"}
+                            payload = json.loads(str(output.content))
+                            capabilities = [s["section"] for s in payload.get("sections", []) if not s.get("error")]
+                            yield "tool_status", {"id": output.tool_call_id, "name": output.name,
+                                "status": "failed" if payload.get("error") else "completed",
+                                "capabilities": capabilities,
+                                "failed_sections": [s["section"] for s in payload.get("sections", []) if s.get("error")]}
                 snapshot = await graph.aget_state(config)
                 values = snapshot.values
                 final = AgentFinalResponse(
